@@ -33,7 +33,7 @@
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             max-width: 90%;
-            width: 350px;
+            width: 400px;
             position: relative;
             overflow-y: auto;
             transition: all 0.3s ease;
@@ -116,7 +116,7 @@
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             width: 95%;
-            max-width: 400px;
+            max-width: 450px;
             height: 85vh;
             overflow-y: auto;
             position: relative;
@@ -324,8 +324,8 @@
         .hover-popup {
             display: none;
             position: absolute;
-            bottom: 100%; /* Posisi tepat di atas elemen Secret */
-            top: auto; /* Menghapus top agar menggunakan bottom */
+            bottom: 100%;
+            top: auto;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
@@ -337,7 +337,7 @@
             width: 140px;
             text-align: center;
             z-index: 10;
-            margin-bottom: 5px; /* Jarak kecil dari elemen Secret */
+            margin-bottom: 5px;
         }
 
         .menu-item:hover .hover-popup {
@@ -465,6 +465,7 @@
             color: #333;
             line-height: 1.8;
             margin: 10px 0;
+            text-align: justify;
         }
 
         .password-popup {
@@ -601,12 +602,16 @@
 
         .music-btn-container {
             position: absolute;
-            right: -40px;
+            left: -40px;
             top: 50%;
             transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
         }
 
-        .music-icon {
+        .music-icon,
+        .video-icon,
+        .pdf-icon {
             padding: 5px;
             background: #ff6f91;
             color: white;
@@ -622,8 +627,48 @@
             transition: all 0.3s ease;
         }
 
-        .music-icon:hover {
+        .music-icon:hover,
+        .video-icon:hover,
+        .pdf-icon:hover {
             background: #ff3e7f;
+        }
+
+        .video-player {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #secretVideo {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+        }
+
+        .close-video-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff3e7f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-video-btn:hover {
+            background: #ff6f91;
+            transform: scale(1.1);
         }
 
         .photo-book-container {
@@ -766,7 +811,7 @@
             filter: invert(1);
         }
 
-        .video-player {
+        .gallery-video-player {
             position: relative;
             max-width: 100%;
             margin: 20px auto;
@@ -779,26 +824,6 @@
             max-width: 300px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .close-video-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff3e7f;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-video-btn:hover {
-            background: #ff6f91;
-            transform: scale(1.1);
         }
 
         .loading-love {
@@ -896,7 +921,7 @@
             .pin-container,
             .main-content {
                 width: 95%;
-                max-width: 350px;
+                max-width: 400px;
                 padding: 15px;
             }
 
@@ -989,7 +1014,7 @@
             .hover-popup {
                 width: 120px;
                 font-size: 9px;
-                margin-bottom: 3px; /* Jarak lebih kecil untuk mobile */
+                margin-bottom: 3px;
             }
 
             .popup {
@@ -1006,6 +1031,39 @@
                 max-width: 280px;
             }
         }
+
+        .music-btn-container {
+    display: flex;
+    gap: 10px;
+}
+
+.music-icon,
+.video-icon,
+.pdf-icon {
+    padding: 5px;
+    background: #ff6f91;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.music-icon:hover,
+.video-icon:hover,
+.pdf-icon:hover {
+    background: #ff3e7f;
+}
+
+.signature {
+    margin: 0; /* Menghapus margin default agar lebih sejajar dengan ikon */
+}
     </style>
 </head>
 
@@ -1027,10 +1085,10 @@
             <button class="number-button" data-number="7">7</button>
             <button class="number-button" data-number="8">8</button>
             <button class="number-button" data-number="9">9</button>
-            <button class="action-button" id="noButton">No</button>
+            <button class="action-button" id="noButton">Clear</button>
             <button class="number-button" data-number="0">0</button>
             <button class="action-button" id="delButton">Del</button>
-            <button class="action-button" id="okButton">Ok</button>
+            <button class="action-button" id="okButton">Buka</button>
         </div>
         <div id="customPopupId" class="popup" style="display: none;">
             <img src="https://i.pinimg.com/originals/d1/98/3d/d1983dfc81b1407d82844f05e5423f04.gif" alt="Funny Image"
@@ -1131,73 +1189,90 @@
             </div>
         </div>
 
-        <!-- MainMenu Section -->
-        <div class="menu-content" id="mainMenu">
-            <div class="menu-content-inner">
-                <h2 class="menu-title">DON'T GET ANGRY AFTER READING THIS</h2>
-                <p class="menu-note">Ryrea, ini adalah ungkapan hati Aku untukmu. 💕</p>
-                <div class="letter-container">
-                    <p class="mainmenu-letter-text" id="mainmenu-line1">Hai, <strong>Ryrea.....</strong> Gimana Kabar
-                        Kamu saya harap Baik-Baik ajh....</p>
-                    <p class="mainmenu-letter-text" id="mainmenu-line2">Aku <strong>Annonymus</strong>, seseorang yang
-                        mungkin tidak pernah kamu duga telah menyimpan perasaan ini untukmu begitu lama. Dari pertama
-                        kali aku melihatmu, ada sesuatu yang berbeda dalam dirimu yang membuat hatiku bergetar. Kamu
-                        seperti bunga yang mekar di tengah taman yang ramai—sederhana, namun begitu memikat.</p>
-                    <p class="mainmenu-letter-text" id="mainmenu-line3">Aku diam-diam menyukaimu,
-                        <strong>Ryrea.</strong> Setiap
-                        senyummu, setiap tawa kecilmu, dan bahkan caramu berjalan dengan
-                        penuh percaya diri—it’s all so captivating. Aku sering mencuri pandang saat kamu tidak melihat,
-                        hanya untuk menyimpan setiap momen kecil itu di hatiku. Aku tahu, mungkin ini terdengar klise,
-                        tapi kamu benar-benar membuat duniaku lebih berwarna.
-                    </p>
-                    <div class="photo-gallery">
-                        <img src="photocont/f5.png" alt="Senyum Ryrea" class="small-photo">
-                        <img src="imgPIN/p3.png" alt="Momen Bersama" class="small-photo">
-                        <img src="imgbook/4.png" alt="Hari Indah" class="small-photo">
-                    </div>
-                    <p class="photo-caption">Beberapa momen yang aku abadikan dalam hati, meski hanya dari kejauhan. 🥰</p>
-                    <p class="mainmenu-letter-text" id="mainmenu-line4">Aku selalu takut untuk mengungkapkan perasaan
-                        ini, karena aku tahu kamu punya kehidupanmu sendiri, hubunganmu sendiri, dan aku tidak ingin
-                        mengganggu kebahagiaanmu. Tapi, di sini, di tempat kecil yang aku buat khusus untukmu, aku ingin
-                        jujur—aku menyukaimu dengan tulus, tanpa mengharapkan balasan. Cukup bagiku bisa menuliskan ini
-                        dan membiarkanmu tahu bahwa ada seseorang di luar sana yang sangat mengagumimu.</p>
-                    <div class="heart-decor">💖</div>
-                    <h3 class="sub-title">Sedikit Tentang Aku, <strong>Annonymus</strong></h3>
-                    <p class="mainmenu-letter-text" id="mainmenu-line5">Aku <strong>Annonymus,</strong> seorang yang
-                        mungkin terlihat biasa di matamu. Aku suka menulis, mendengarkan musik yang lembut, dan
-                        menghabiskan waktu di tempat yang tenang seperti taman atau tepi danau. Aku orang yang
-                        sederhana, tapi aku selalu berusaha memberikan yang terbaik untuk orang-orang yang aku sayangi.
-                        Aku lahir di sebuah kota kecil, dan aku selalu bermimpi untuk bisa berbagi cerita hidupku dengan
-                        seseorang yang spesial—dan bagiku, itu kamu, <strong>Ryrea,</strong></p>
-                    <p class="mainmenu-letter-text" id="mainmenu-line6">Aku juga suka mengabadikan momen dalam bentuk
-                        foto, meskipun aku bukan fotografer handal. Aku suka warna-warna lembut seperti pink dan
-                        lavender, mungkin itu sebabnya aku membuat tempat ini dengan nuansa seperti ini—karena aku
-                        merasa warnanya mencerminkan perasaanku untukmu: lembut, hangat, dan penuh cinta.</p>
-                    <div class="heart-decor">💞</div>
-                    <p class="mainmenu-letter-text" id="mainmenu-line7"><strong>Ryrea,</strong> aku tidak tahu apakah
-                        kamu akan membaca ini dengan perasaan yang sama, atau mungkin kamu akan merasa aneh. Tapi aku
-                        harap kamu tidak marah setelah membaca ini. Aku hanya ingin kamu tahu bahwa kamu sangat berarti
-                        bagiku, dan aku akan terus mendukungmu dari jauh, apa pun pilihanmu dalam hidup. Terima kasih
-                        karena telah menjadi dirimu—dan terima kasih karena telah menjadi bagian dari duniaku, meski
-                        hanya dalam diam.</p>
+       <!-- MainMenu Section -->
+<div class="menu-content" id="mainMenu">
+    <div class="menu-content-inner">
+        <h2 class="menu-title">DON'T GET ANGRY AFTER READING THIS</h2>
+        <p class="menu-note">Ryrea, ini adalah ungkapan hati Aku untukmu. 💕</p>
+        <div class="letter-container">
+            <p class="mainmenu-letter-text" id="mainmenu-line1">Hai, <strong>Ryrea.....</strong> Gimana Kabar
+                Kamu saya harap Baik-Baik ajh....</p>
+            <p class="mainmenu-letter-text" id="mainmenu-line2">Aku <strong>Annonymus</strong>, seseorang yang
+                mungkin tidak pernah kamu duga telah menyimpan perasaan ini untukmu begitu lama. Dari pertama
+                kali aku melihatmu, ada sesuatu yang berbeda dalam dirimu yang membuat hatiku bergetar. Kamu
+                seperti bunga yang mekar di tengah taman yang ramai—sederhana, namun begitu memikat.</p>
+            <p class="mainmenu-letter-text" id="mainmenu-line3">Aku diam-diam menyukaimu,
+                <strong>Ryrea.</strong> Setiap
+                senyummu, setiap tawa kecilmu, dan bahkan caramu berjalan dengan
+                penuh percaya diri—it’s all so captivating. Aku sering mencuri pandang saat kamu tidak melihat,
+                hanya untuk menyimpan setiap momen kecil itu di hatiku. Aku tahu, mungkin ini terdengar klise,
+                tapi kamu benar-benar membuat duniaku lebih berwarna.
+            </p>
+            <div class="photo-gallery">
+                <img src="photocont/f5.png" alt="Senyum Ryrea" class="small-photo">
+                <img src="imgPIN/p3.png" alt="Momen Bersama" class="small-photo">
+                <img src="imgbook/4.png" alt="Hari Indah" class="small-photo">
+            </div>
+            <p class="photo-caption">Beberapa momen yang aku abadikan dalam hati, meski hanya dari kejauhan. 🥰</p>
+            <p class="mainmenu-letter-text" id="mainmenu-line4">Aku selalu takut untuk mengungkapkan perasaan
+                ini, karena aku tahu kamu punya kehidupanmu sendiri, hubunganmu sendiri, dan aku tidak ingin
+                mengganggu kebahagiaanmu. Tapi, di sini, di tempat kecil yang aku buat khusus untukmu, aku ingin
+                jujur—aku menyukaimu dengan tulus, tanpa mengharapkan balasan. Cukup bagiku bisa menuliskan ini
+                dan membiarkanmu tahu bahwa ada seseorang di luar sana yang sangat mengagumimu.</p>
+            <div class="heart-decor">💖</div>
+            <h3 class="sub-title">Sedikit Tentang Aku, <strong>Annonymus</strong></h3>
+            <p class="mainmenu-letter-text" id="mainmenu-line5">Aku <strong>Annonymus,</strong> seorang yang
+                mungkin terlihat biasa di matamu. Aku suka menulis, mendengarkan musik yang lembut, dan
+                menghabiskan waktu di tempat yang tenang seperti taman atau tepi danau. Aku orang yang
+                sederhana, tapi aku selalu berusaha memberikan yang terbaik untuk orang-orang yang aku sayangi.
+                Aku lahir di sebuah kota kecil, dan aku selalu bermimpi untuk bisa berbagi cerita hidupku dengan
+                seseorang yang spesial—dan bagiku, itu kamu, <strong>Ryrea,</strong></p>
+            <p class="mainmenu-letter-text" id="mainmenu-line6">Aku juga suka mengabadikan momen dalam bentuk
+                foto, meskipun aku bukan fotografer handal. Aku suka warna-warna lembut seperti pink dan
+                lavender, mungkin itu sebabnya aku membuat tempat ini dengan nuansa seperti ini—karena aku
+                merasa warnanya mencerminkan perasaanku untukmu: lembut, hangat, dan penuh cinta.</p>
+            <div class="heart-decor">💞</div>
+            <p class="mainmenu-letter-text" id="mainmenu-line7"><strong>Ryrea,</strong> aku tidak tahu apakah
+                kamu akan membaca ini dengan perasaan yang sama, atau mungkin kamu akan merasa aneh. Tapi aku
+                harap kamu tidak marah setelah membaca ini. Aku hanya ingin kamu tahu bahwa kamu sangat berarti
+                bagiku, dan aku akan terus mendukungmu dari jauh, apa pun pilihanmu dalam hidup. Terima kasih
+                karena telah menjadi dirimu—dan terima kasih karena telah menjadi bagian dari duniaku, meski
+                hanya dalam diam.</p>
+
+
+                <div style="display: flex; justify-content: flex-end; align-items: center; flex-direction: column; gap: 20px;">
                     <p class="mainmenu-letter-text signature" id="mainmenu-line8">Dengan cinta tulus,
                         <br><strong>Anonymous</strong> 💕
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 10px; position: relative;">
                         <span class="music-btn-container">
                             <button id="playMusicBtn" class="music-icon"><i class="fas fa-music"></i></button>
+                            <button id="playVideoBtn" class="video-icon"><i class="fas fa-video"></i></button>
+                            <button id="downloadPdfBtn" class="pdf-icon"><i class="fas fa-file-pdf"></i></button>
                         </span>
-                    </p>
-                    <div class="response-section">
-                        <h3 class="sub-title"><strong>Ryrea,</strong> Tulis Jawabanmu di Sini 💌</h3>
-                        <textarea id="responseInput" rows="4" cols="50"
-                            placeholder="Tulis jawabanmu di sini..."></textarea>
-                        <button id="submitResponseBtn">Kirim Jawaban ke WhatsApp</button>
-                        <div id="responseDisplay"></div>
                     </div>
                 </div>
-                <audio id="backgroundMusic" loop>
-                    <source src="musik/ktngg kau pts.mp3" type="audio/mpeg">
-                </audio>
+
+            <div class="response-section">
+                <h3 class="sub-title"><strong>Ryrea,</strong> Tulis Jawabanmu di Sini 💌</h3>
+                <textarea id="responseInput" rows="4" cols="50" placeholder="Tulis jawabanmu di sini..."></textarea>
+                <button id="submitResponseBtn">Kirim Jawaban ke WhatsApp</button>
+                <div id="responseDisplay"></div>
             </div>
+        </div>
+        <!-- Music Player (GANTI MUSIK DISINI) -->
+        <audio id="backgroundMusic" loop>
+            <source src="musik/ktngg kau pts.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+</div>
+
+        <!-- Video Player for Secret Section -->
+        <div class="video-player" id="secretVideoPlayer">
+            <video id="secretVideo" controls>
+                <source src="selfvideo/VIDEO NEMBAK.mp4" type="video/mp4">
+            </video>
+            <button class="close-video-btn" id="closeSecretVideoBtn">×</button>
         </div>
 
         <!-- Readme Section -->
@@ -1221,7 +1296,7 @@
         <!-- Gallery Section -->
         <div class="menu-content" id="gallerySection">
             <h2 class="section-title">📸 Clip Foto kamu yang diam diam saya simpan</h2>
-            <div class="video-player" id="videoPlayer" style="display: none;">
+            <div class="gallery-video-player" id="videoPlayer" style="display: none;">
                 <video id="galleryVideo" controls>
                     <source id="galleryVideoSource" src="" type="video/mp4">
                 </video>
@@ -1362,14 +1437,152 @@
         </div>
 
     <!-- JavaScript -->
-    <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
+<script>
+// Tunggu hingga library html2pdf dimuat
+window.addEventListener("load", function () {
+    // Cek apakah library html2pdf.js sudah dimuat
+    if (typeof html2pdf === "undefined") {
+        console.error("html2pdf.js gagal dimuat. Periksa CDN atau koneksi internet.");
+        alert("Gagal memuat library untuk membuat PDF. Pastikan koneksi internet aktif.");
+        return;
+    }
+
+    // Variabel untuk melacak status proses
+    let isGeneratingPDF = false;
+
+    // Tambahkan event listener ke tombol download PDF
+    document.getElementById("downloadPdfBtn").addEventListener("click", function () {
+        // Jika proses sedang berjalan, hentikan
+        if (isGeneratingPDF) {
+            console.log("Proses pembuatan PDF sedang berjalan. Silakan tunggu...");
+            return;
+        }
+
+        // Tandai proses sedang berjalan
+        isGeneratingPDF = true;
+
+        // Ambil elemen yang ingin dijadikan PDF
+        const originalElement = document.querySelector("#mainMenu .menu-content-inner");
+        if (!originalElement) {
+            console.error("Elemen #mainMenu .menu-content-inner tidak ditemukan.");
+            alert("Konten tidak ditemukan! Pastikan elemen #mainMenu .menu-content-inner ada di halaman.");
+            isGeneratingPDF = false; // Reset status
+            return;
+        }
+        console.log("Elemen utama ditemukan:", originalElement);
+
+        // Clone elemen untuk menghindari perubahan pada tampilan asli
+        const clonedElement = originalElement.cloneNode(true);
+        clonedElement.style.position = "absolute";
+        clonedElement.style.left = "-9999px"; // Sembunyikan elemen kloning dari tampilan
+        clonedElement.style.width = "210mm"; // Sesuaikan dengan ukuran A4
+        clonedElement.style.height = "auto";
+        clonedElement.style.visibility = "visible"; // Pastikan elemen terlihat
+        clonedElement.style.display = "block"; // Pastikan elemen ditampilkan
+        clonedElement.style.transform = "none"; // Hindari transform
+        clonedElement.style.opacity = "1"; // Pastikan elemen tidak transparan
+        clonedElement.style.zIndex = "9999"; // Pastikan elemen di atas
+        document.body.appendChild(clonedElement);
+
+        // Handle gambar di dalam elemen kloning
+        const images = clonedElement.getElementsByTagName("img");
+        let loadedImages = 0;
+        const totalImages = images.length;
+
+        // Jika tidak ada gambar, langsung buat PDF
+        if (totalImages === 0) {
+            generatePDF(clonedElement);
+        } else {
+            // Jika ada gambar, tunggu hingga semua gambar selesai dimuat
+            for (let img of images) {
+                // Abaikan gambar eksternal (jika ada)
+                if (!img.src.includes(window.location.hostname)) {
+                    img.src = ""; // Hapus sumber gambar eksternal
+                    console.warn("Gambar eksternal diabaikan:", img.src);
+                }
+
+                // Tambahkan event listener untuk gambar yang berhasil dimuat
+                img.onload = () => {
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        generatePDF(clonedElement); // Buat PDF setelah semua gambar dimuat
+                    }
+                };
+
+                // Tambahkan event listener untuk gambar yang gagal dimuat
+                img.onerror = () => {
+                    console.warn("Gambar gagal dimuat:", img.src);
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        generatePDF(clonedElement); // Tetap buat PDF meskipun ada gambar yang gagal
+                    }
+                };
+
+                // Jika gambar sudah dimuat sebelumnya, langsung panggil onload
+                if (img.complete) {
+                    img.onload();
+                }
+            }
+        }
+    });
+
+    // Fungsi untuk menghasilkan PDF
+    function generatePDF(element) {
+        const options = {
+            margin: [10, 10, 10, 10], // Margin dalam mm (atas, kanan, bawah, kiri)
+            filename: "Ungkapan_Hati_Anonymous.pdf",
+            image: { type: "jpeg", quality: 1 }, // Kualitas gambar maksimal
+            html2canvas: {
+                scale: 2, // Skala rendering
+                useCORS: true, // Izinkan CORS untuk gambar
+                logging: true, // Aktifkan logging untuk debugging
+                onclone: (clonedDoc) => {
+                    // Pastikan elemen yang dikloning ditampilkan dengan benar
+                    clonedDoc.querySelector(".menu-content-inner").style.display = "block";
+                    clonedDoc.querySelectorAll('img').forEach(img => {
+                        img.style.display = "block";
+                        img.style.visibility = "visible";
+                    });
+                }
+            },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } // Format A4
+        };
+
+        // Buat PDF menggunakan html2pdf
+        html2pdf()
+            .from(element)
+            .set(options)
+            .save()
+            .then(() => {
+                console.log("PDF berhasil dibuat.");
+                alert("PDF berhasil diunduh!");
+            })
+            .catch((err) => {
+                console.error("Gagal membuat PDF:", err);
+                alert("Gagal membuat PDF. Silakan coba lagi atau periksa konsol untuk detailnya.");
+            })
+            .finally(() => {
+                // Hapus elemen kloning setelah selesai
+                document.body.removeChild(element);
+                // Reset status proses
+                isGeneratingPDF = false;
+            });
+    }
+});
+        
         // Background Music Handler
         function initializeBackgroundMusic() {
             const mainMenu = document.getElementById('mainMenu');
             const backgroundMusic = document.getElementById('backgroundMusic');
             const playMusicBtn = document.getElementById('playMusicBtn');
+            const playVideoBtn = document.getElementById('playVideoBtn');
+            const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+            const secretVideoPlayer = document.getElementById('secretVideoPlayer');
+            const secretVideo = document.getElementById('secretVideo');
+            const closeSecretVideoBtn = document.getElementById('closeSecretVideoBtn');
 
-            if (!mainMenu || !backgroundMusic || !playMusicBtn) return;
+            if (!mainMenu || !backgroundMusic || !playMusicBtn || !playVideoBtn || !downloadPdfBtn || !secretVideoPlayer || !secretVideo || !closeSecretVideoBtn) return;
 
             backgroundMusic.volume = 0.3;
             let hasPlayed = false;
@@ -1386,6 +1599,29 @@
             };
 
             playMusicBtn.addEventListener('click', playMusic);
+
+            playVideoBtn.addEventListener('click', () => {
+                stopOtherMedia(secretVideo);
+                secretVideoPlayer.style.display = 'block';
+                secretVideo.play().catch(err => console.error("Error playing secret video:", err));
+            });
+
+            closeSecretVideoBtn.addEventListener('click', () => {
+                secretVideoPlayer.style.display = 'none';
+                secretVideo.pause();
+            });
+
+            downloadPdfBtn.addEventListener('click', () => {
+                const element = document.querySelector('#mainMenu .menu-content-inner');
+                const options = {
+                    margin: 1,
+                    filename: 'Ungkapan_Hati_Annonymus.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().from(element).set(options).save();
+            });
         }
 
         // Response Handler
@@ -1411,7 +1647,7 @@
         }
 
         // General Script
-        const correctPin = "09042003";
+        const correctPin = "1";
         let currentPosition = 0;
         const photos = [
             'imgPIN/p1.png',
@@ -1551,7 +1787,6 @@
                     startTypingEffect();
                 } else if (target === 'gallerySection') {
                     initializeGallery();
-                    // Langsung scroll ke konten gallery
                     setTimeout(() => targetSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -1665,6 +1900,7 @@
         const videoPlayer = document.getElementById('videoPlayer');
         const galleryVideo = document.getElementById('galleryVideo');
         const galleryVideoSource = document.getElementById('galleryVideoSource');
+        const secretVideo = document.getElementById('secretVideo');
 
         if (audio) audio.volume = 0.5;
         if (backgroundVideo) {
@@ -1674,6 +1910,7 @@
         }
         if (backgroundMusic) backgroundMusic.volume = 0.3;
         if (clickSound) clickSound.volume = 0.5;
+        if (secretVideo) secretVideo.volume = 1.0;
 
         function updatePlayPauseIcon(isPlaying) {
             if (playPauseIcon) {
@@ -1693,6 +1930,10 @@
                 videoPlayer.style.display = 'none';
             }
             if (except !== backgroundMusic && backgroundMusic) backgroundMusic.pause();
+            if (except !== secretVideo && secretVideo) {
+                secretVideo.pause();
+                document.getElementById('secretVideoPlayer').style.display = 'none';
+            }
         }
 
         if (playPauseButton) {
@@ -1748,7 +1989,7 @@
         // Gallery Script
         function initializeGallery() {
             const playButtons = document.querySelectorAll('.play-video-btn');
-            const closeVideoBtn = document.querySelector('.close-video-btn');
+            const closeVideoBtn = document.querySelector('.gallery-video-player .close-video-btn');
 
             resetGallery();
 
