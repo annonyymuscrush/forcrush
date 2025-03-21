@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Our Special Website</title>
+
+    <!-- CSS Styles -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5e7f2, #ffdde1);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pin-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 350px;
+            position: relative;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        #photo-container {
+            width: 100%;
+            max-width: 250px;
+            height: 250px;
+            margin: 15px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 4px solid #ff6f91;
+            box-shadow: 0 4px 15px rgba(255, 111, 145, 0.3);
+        }
+
+        #photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        #pinInput {
+            font-size: 18px;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ff6f91;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            background: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #pinInput:read-only {
+            background: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+        #pinInput:focus {
+            border-color: #ff3e7f;
+            box-shadow: 0 0 8px rgba(255, 62, 127, 0.4);
+        }
+
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px auto;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .number-button,
+        .action-button {
+            background: #ff6f91;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 111, 145, 0.2);
+        }
+
+        .number-button:hover,
+        .action-button:hover {
+            background: #ff3e7f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 62, 127, 0.3);
+        }
+
+        .main-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 400px;
+            height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        .notice-text {
+            font-size: 18px;
+            color: #ff3e7f;
+            margin: 20px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #photoSectionUnique {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        #photoFrameUnique {
+            display: flex;
+            animation: slide 16s linear infinite;
+            width: calc(150px * 8 + 10px * 7);
+        }
+
+        #galleryPhoto1,
+        #galleryPhoto2,
+        #galleryPhoto3,
+        #galleryPhoto4,
+        #galleryPhoto5,
+        #galleryPhoto6,
+        #galleryPhoto7,
+        #galleryPhoto8 {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            flex-shrink: 0;
+            margin-right: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .music-player {
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .music-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-info img.album-cover {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .music-details .song-title {
+            font-size: 14px;
+            color: #ff3e7f;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .music-details .artist {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .music-controls img {
+            width: 25px;
+            height: 25px;
+            filter: brightness(0) saturate(100%) hue-rotate(330deg);
+            transition: transform 0.3s ease;
+        }
+
+        .music-controls button:hover img {
+            transform: scale(1.1);
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-container span {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 5px;
+            background: #eee;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: #ff3e7f;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
+
+        .menu {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .menu-item {
+            background: #fff;
+            color: #ff3e7f;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .menu-item:hover {
+            background: #ff3e7f;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 62, 127, 0.3);
+        }
+
+        .menu-item i {
+            font-size: 18px;
+        }
+
+        .hover-popup {
+            display: none;
+            position: absolute;
+            bottom: 100%; /* Posisi tepat di atas elemen Secret */
+            top: auto; /* Menghapus top agar menggunakan bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            color: #333;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 10px;
+            width: 140px;
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 5px; /* Jarak kecil dari elemen Secret */
+        }
+
+        .menu-item:hover .hover-popup {
+            display: block;
+        }
+
+        .secret-notif {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 62, 127, 0.9);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            font-size: 14px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .secret-notif button {
+            background: #fff;
+            color: #ff3e7f;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .secret-notif button:hover {
+            background: #ffebee;
+            transform: scale(1.05);
+        }
+
+        .menu-content {
+            display: none;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .menu-title {
+            font-size: 22px;
+            color: #ff3e7f;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .menu-note {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff3e7f;
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            animation: shake 0.5s ease-in-out;
+            width: 200px;
+        }
+
+        .popup button {
+            background: #fff;
+            color: #ff3e7f;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .popup button:hover {
+            background: #ffebee;
+            transform: scale(1.05);
+        }
+
+        #readmeSection {
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #ff3e7f;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .letter-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .readme-letter-text,
+        .mainmenu-letter-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+
+        .password-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 90%;
+            max-width: 250px;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .password-form input {
+            padding: 8px;
+            border: 2px solid #ff6f91;
+            border-radius: 10px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .password-form input:focus {
+            border-color: #ff3e7f;
+            box-shadow: 0 0 5px rgba(255, 62, 127, 0.4);
+        }
+
+        .password-form button {
+            padding: 8px;
+            background: #ff6f91;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .password-form button:hover {
+            background: #ff3e7f;
+            transform: translateY(-2px);
+        }
+
+        .photo-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .small-photo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ff6f91;
+            transition: transform 0.3s ease;
+        }
+
+        .small-photo:hover {
+            transform: scale(1.1);
+        }
+
+        .photo-caption {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .heart-decor {
+            font-size: 24px;
+            color: #ff3e7f;
+            margin: 20px 0;
+        }
+
+        .sub-title {
+            font-size: 18px;
+            color: #ff3e7f;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .signature {
+            font-style: italic;
+            text-align: right;
+            color: #ff3e7f;
+            font-size: 14px;
+        }
+
+        .response-section {
+            margin-top: 20px;
+        }
+
+        #responseInput {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #ff6f91;
+            border-radius: 5px;
+            font-size: 14px;
+            resize: vertical;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        #submitResponseBtn {
+            padding: 10px 20px;
+            background: #ff6f91;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #submitResponseBtn:hover {
+            background: #ff3e7f;
+        }
+
+        #responseDisplay {
+            margin-top: 10px;
+            color: #ff3e7f;
+            font-size: 14px;
+        }
+
+        .music-btn-container {
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .music-icon {
+            padding: 5px;
+            background: #ff6f91;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .music-icon:hover {
+            background: #ff3e7f;
+        }
+
+        .photo-book-container {
+            max-width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .book {
+            width: 240px;
+            height: 180px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        #cover,
+        .flip,
+        #back-cover {
+            width: 120px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 120px;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: #fff;
+        }
+
+        .front img,
+        .back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        .next-btn,
+        .back-btn {
+            background: #ff6f91;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+            bottom: 5px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .next-btn:hover,
+        .back-btn:hover {
+            background: #ff3e7f;
+        }
+
+        .next-btn i,
+        .back-btn i {
+            font-size: 12px;
+        }
+
+        .next-btn {
+            right: 5px;
+        }
+
+        .back-btn {
+            left: 5px;
+        }
+
+        .page-right {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .main-photo {
+            width: 120px;
+            height: 180px;
+            position: relative;
+        }
+
+        .main-img {
+            width: 120px;
+            height: 180px;
+            object-fit: cover;
+            border: none;
+        }
+
+        .play-video-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 62, 127, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-video-btn:hover {
+            background: #ff3e7f;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-icon {
+            width: 10px;
+            height: 10px;
+            filter: invert(1);
+        }
+
+        .video-player {
+            position: relative;
+            max-width: 100%;
+            margin: 20px auto;
+            text-align: center;
+            display: none;
+        }
+
+        #galleryVideo {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-video-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff3e7f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-video-btn:hover {
+            background: #ff6f91;
+            transform: scale(1.1);
+        }
+
+        .loading-love {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loading-love.hidden {
+            display: none;
+        }
+
+        .heart {
+            width: 50px;
+            height: 50px;
+            background: #ff3e7f;
+            position: relative;
+            transform: rotate(-45deg);
+            animation: pulse 1s infinite ease-in-out;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            background: #ff3e7f;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart:before {
+            top: -25px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 25px;
+            top: 0;
+        }
+
+        .typing-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ff3e7f;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(-45deg) scale(1.1);
+            }
+
+            100% {
+                transform: rotate(-45deg) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(-50%, -50%) translateX(0); }
+            10% { transform: translate(-50%, -50%) translateX(-5px); }
+            20% { transform: translate(-50%, -50%) translateX(5px); }
+            30% { transform: translate(-50%, -50%) translateX(-5px); }
+            40% { transform: translate(-50%, -50%) translateX(5px); }
+            50% { transform: translate(-50%, -50%) translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @media (max-width: 600px) {
+            .pin-container,
+            .main-content {
+                width: 95%;
+                max-width: 350px;
+                padding: 15px;
+            }
+
+            #photo-container {
+                max-width: 200px;
+                height: 200px;
+            }
+
+            #pinInput {
+                font-size: 16px;
+                width: 85%;
+            }
+
+            .number-pad {
+                gap: 8px;
+                max-width: 280px;
+            }
+
+            .number-button,
+            .action-button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .notice-text {
+                font-size: 16px;
+            }
+
+            #photoSectionUnique {
+                max-width: 280px;
+            }
+
+            #galleryPhoto1,
+            #galleryPhoto2,
+            #galleryPhoto3,
+            #galleryPhoto4,
+            #galleryPhoto5,
+            #galleryPhoto6,
+            #galleryPhoto7,
+            #galleryPhoto8 {
+                width: 120px;
+                height: 120px;
+            }
+
+            .music-player {
+                width: 95%;
+                max-width: 280px;
+            }
+
+            .menu-item {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .menu-title {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .book {
+                width: 200px;
+                height: 150px;
+            }
+
+            #cover,
+            .flip,
+            #back-cover {
+                width: 100px;
+                left: 100px;
+            }
+
+            .main-photo {
+                width: 100px;
+                height: 150px;
+            }
+
+            .main-img {
+                width: 100px;
+                height: 150px;
+            }
+
+            .small-photo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .hover-popup {
+                width: 120px;
+                font-size: 9px;
+                margin-bottom: 3px; /* Jarak lebih kecil untuk mobile */
+            }
+
+            .popup {
+                width: 180px;
+                padding: 12px;
+            }
+
+            .popup button {
+                padding: 6px 12px;
+            }
+
+            #responseInput {
+                width: 95%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- PIN Container -->
+    <div class="pin-container">
+        <h2 style="color: #ff3e7f; font-weight: 600;">Masukkan PIN <br> Tgl kamu 😊</h2>
+        <div id="photo-container">
+            <img src="imgPIN/p1.png" id="photo">
+        </div>
+        <input type="password" id="pinInput" maxlength="8" readonly aria-label="Enter your PIN">
+        <div class="number-pad">
+            <button class="number-button" data-number="1">1</button>
+            <button class="number-button" data-number="2">2</button>
+            <button class="number-button" data-number="3">3</button>
+            <button class="number-button" data-number="4">4</button>
+            <button class="number-button" data-number="5">5</button>
+            <button class="number-button" data-number="6">6</button>
+            <button class="number-button" data-number="7">7</button>
+            <button class="number-button" data-number="8">8</button>
+            <button class="number-button" data-number="9">9</button>
+            <button class="action-button" id="noButton">No</button>
+            <button class="number-button" data-number="0">0</button>
+            <button class="action-button" id="delButton">Del</button>
+            <button class="action-button" id="okButton">Ok</button>
+        </div>
+        <div id="customPopupId" class="popup" style="display: none;">
+            <img src="https://i.pinimg.com/originals/d1/98/3d/d1983dfc81b1407d82844f05e5423f04.gif" alt="Funny Image"
+                style="width: 150px; height: 150px; border-radius:none;">
+            <p>Maaf, PIN yang kamu masukkan salah. Coba lagi ya!</p>
+        </div>
+        <audio id="clickSound" preload="auto">
+            <source src="musik/sound pin.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Loading Love Animation -->
+    <div id="loadingLove" class="loading-love" style="display: none;">
+        <div class="heart"></div>
+        <p id="loadingText" class="typing-text"></p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="notice-text">NOTICE <br> the most beautiful my Crush</div>
+
+        <!-- Photo Slider -->
+        <div id="photoSectionUnique">
+            <div id="photoFrameUnique">
+                <img src="photocont/f1.png" alt="Photo 1" class="gallery-photo" id="galleryPhoto1">
+                <img src="photocont/f2.png" alt="Photo 2" id="galleryPhoto2">
+                <img src="photocont/f3.png" alt="Photo 3" id="galleryPhoto3">
+                <img src="photocont/f4.png" alt="Photo 4" id="galleryPhoto4">
+                <img src="photocont/f1.png" alt="Photo 1" id="galleryPhoto5">
+                <img src="photocont/f2.png" alt="Photo 2" id="galleryPhoto6">
+                <img src="photocont/f3.png" alt="Photo 3" id="galleryPhoto7">
+                <img src="photocont/f4.png" alt="Photo 4" id="galleryPhoto8">
+            </div>
+        </div>
+
+        <!-- Music Player -->
+        <div class="music-player">
+            <video class="background-video" id="backgroundVideo" muted loop preload="auto">
+                <source src="videobg/yt1z.net - yung kai - blue (official music video) (1080p).mp4" type="video/mp4">
+            </video>
+            <div class="music-info">
+                <img src="https://asset-2.tstatic.net/kaltim/foto/bank/images/20241216_lirik-lagu-blue-yung-kai.jpg"
+                    alt="Album Cover" class="album-cover">
+                <div class="music-details">
+                    <p class="song-title">Blue X Until I Found You </p>
+                    <p class="artist">Yung Kai & Stephen Sanchezh </p>
+                </div>
+            </div>
+            <div class="music-controls">
+                <button id="rewindButton">
+                    <img src="https://cdn-icons-png.flaticon.com/512/58/58484.png" alt="Rewind">
+                </button>
+                <button id="playPauseButton">
+                    <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play" id="playPauseIcon">
+                </button>
+                <button id="forwardButton">
+                    <img src="https://cdn-icons-png.flaticon.com/512/58/58422.png" alt="Forward">
+                </button>
+            </div>
+            <div class="progress-container">
+                <span id="currentTime">00:00</span>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span id="duration">03:23</span>
+            </div>
+        </div>
+        <audio id="audio" src="musik/yung kai - blue (Official Music Video).mp3"></audio>
+
+        <!-- Menu -->
+        <div class="menu" id="menu">
+            <div class="menu-item" data-target="readmeSection">
+                <i class="fas fa-book-open"></i> Readme
+            </div>
+            <div class="menu-item" data-target="gallerySection">
+                <i class="fas fa-camera"></i> Gallery
+            </div>
+            <div class="menu-item shake" data-target="mainMenu">
+                <i class="fas fa-lock"></i> Secret
+                <div class="hover-popup">
+                    Ini adalah saya privasikan khusus buat kamu, semua yang ada di dalam sini adalah ungkapan isi hati
+                    saya dan tentang diri aku dan identitas aku.
+                </div>
+            </div>
+            <div id="secretNotif" class="secret-notif">
+                <p>Section ini berisi rahasia pribadi. Yakin ingin masuk?</p>
+                <button id="confirmSecretBtn">Ya</button>
+                <button id="cancelSecretBtn">Tidak</button>
+            </div>
+        </div>
+
+        <!-- Password Popup -->
+        <div id="passwordPopup" class="password-popup" style="display: none;">
+            <div class="password-form">
+                <input type="password" id="passwordInput" placeholder="Masukkan Kata Sandi">
+                <button onclick="checkPassword()">Submit</button>
+                <button onclick="closePasswordPopup()">Batal</button>
+            </div>
+        </div>
+
+        <!-- MainMenu Section -->
+        <div class="menu-content" id="mainMenu">
+            <div class="menu-content-inner">
+                <h2 class="menu-title">DON'T GET ANGRY AFTER READING THIS</h2>
+                <p class="menu-note">Ryrea, ini adalah ungkapan hati Aku untukmu. 💕</p>
+                <div class="letter-container">
+                    <p class="mainmenu-letter-text" id="mainmenu-line1">Hai, <strong>Ryrea.....</strong> Gimana Kabar
+                        Kamu saya harap Baik-Baik ajh....</p>
+                    <p class="mainmenu-letter-text" id="mainmenu-line2">Aku <strong>Annonymus</strong>, seseorang yang
+                        mungkin tidak pernah kamu duga telah menyimpan perasaan ini untukmu begitu lama. Dari pertama
+                        kali aku melihatmu, ada sesuatu yang berbeda dalam dirimu yang membuat hatiku bergetar. Kamu
+                        seperti bunga yang mekar di tengah taman yang ramai—sederhana, namun begitu memikat.</p>
+                    <p class="mainmenu-letter-text" id="mainmenu-line3">Aku diam-diam menyukaimu,
+                        <strong>Ryrea.</strong> Setiap
+                        senyummu, setiap tawa kecilmu, dan bahkan caramu berjalan dengan
+                        penuh percaya diri—it’s all so captivating. Aku sering mencuri pandang saat kamu tidak melihat,
+                        hanya untuk menyimpan setiap momen kecil itu di hatiku. Aku tahu, mungkin ini terdengar klise,
+                        tapi kamu benar-benar membuat duniaku lebih berwarna.
+                    </p>
+                    <div class="photo-gallery">
+                        <img src="photocont/f5.png" alt="Senyum Ryrea" class="small-photo">
+                        <img src="imgPIN/p3.png" alt="Momen Bersama" class="small-photo">
+                        <img src="imgbook/4.png" alt="Hari Indah" class="small-photo">
+                    </div>
+                    <p class="photo-caption">Beberapa momen yang aku abadikan dalam hati, meski hanya dari kejauhan. 🥰</p>
+                    <p class="mainmenu-letter-text" id="mainmenu-line4">Aku selalu takut untuk mengungkapkan perasaan
+                        ini, karena aku tahu kamu punya kehidupanmu sendiri, hubunganmu sendiri, dan aku tidak ingin
+                        mengganggu kebahagiaanmu. Tapi, di sini, di tempat kecil yang aku buat khusus untukmu, aku ingin
+                        jujur—aku menyukaimu dengan tulus, tanpa mengharapkan balasan. Cukup bagiku bisa menuliskan ini
+                        dan membiarkanmu tahu bahwa ada seseorang di luar sana yang sangat mengagumimu.</p>
+                    <div class="heart-decor">💖</div>
+                    <h3 class="sub-title">Sedikit Tentang Aku, <strong>Annonymus</strong></h3>
+                    <p class="mainmenu-letter-text" id="mainmenu-line5">Aku <strong>Annonymus,</strong> seorang yang
+                        mungkin terlihat biasa di matamu. Aku suka menulis, mendengarkan musik yang lembut, dan
+                        menghabiskan waktu di tempat yang tenang seperti taman atau tepi danau. Aku orang yang
+                        sederhana, tapi aku selalu berusaha memberikan yang terbaik untuk orang-orang yang aku sayangi.
+                        Aku lahir di sebuah kota kecil, dan aku selalu bermimpi untuk bisa berbagi cerita hidupku dengan
+                        seseorang yang spesial—dan bagiku, itu kamu, <strong>Ryrea,</strong></p>
+                    <p class="mainmenu-letter-text" id="mainmenu-line6">Aku juga suka mengabadikan momen dalam bentuk
+                        foto, meskipun aku bukan fotografer handal. Aku suka warna-warna lembut seperti pink dan
+                        lavender, mungkin itu sebabnya aku membuat tempat ini dengan nuansa seperti ini—karena aku
+                        merasa warnanya mencerminkan perasaanku untukmu: lembut, hangat, dan penuh cinta.</p>
+                    <div class="heart-decor">💞</div>
+                    <p class="mainmenu-letter-text" id="mainmenu-line7"><strong>Ryrea,</strong> aku tidak tahu apakah
+                        kamu akan membaca ini dengan perasaan yang sama, atau mungkin kamu akan merasa aneh. Tapi aku
+                        harap kamu tidak marah setelah membaca ini. Aku hanya ingin kamu tahu bahwa kamu sangat berarti
+                        bagiku, dan aku akan terus mendukungmu dari jauh, apa pun pilihanmu dalam hidup. Terima kasih
+                        karena telah menjadi dirimu—dan terima kasih karena telah menjadi bagian dari duniaku, meski
+                        hanya dalam diam.</p>
+                    <p class="mainmenu-letter-text signature" id="mainmenu-line8">Dengan cinta tulus,
+                        <br><strong>Anonymous</strong> 💕
+                        <span class="music-btn-container">
+                            <button id="playMusicBtn" class="music-icon"><i class="fas fa-music"></i></button>
+                        </span>
+                    </p>
+                    <div class="response-section">
+                        <h3 class="sub-title"><strong>Ryrea,</strong> Tulis Jawabanmu di Sini 💌</h3>
+                        <textarea id="responseInput" rows="4" cols="50"
+                            placeholder="Tulis jawabanmu di sini..."></textarea>
+                        <button id="submitResponseBtn">Kirim Jawaban ke WhatsApp</button>
+                        <div id="responseDisplay"></div>
+                    </div>
+                </div>
+                <audio id="backgroundMusic" loop>
+                    <source src="musik/ktngg kau pts.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <!-- Readme Section -->
+        <div class="menu-content" id="readmeSection">
+            <h2 class="section-title">📖 Surat untuk Ryrea</h2>
+            <div class="letter-container">
+                <p class="readme-letter-text" id="readme-line1"></p>
+                <p class="readme-letter-text" id="readme-line2"></p>
+                <p class="readme-letter-text" id="readme-line3"></p>
+                <p class="readme-letter-text" id="readme-line4"></p>
+                <p class="readme-letter-text" id="readme-line5"></p>
+                <p class="readme-letter-text" id="readme-line6"></p>
+                <p class="readme-letter-text" id="readme-line7"></p>
+                <p class="readme-letter-text" id="readme-line8"></p>
+                <p class="readme-letter-text" id="readme-line9"></p>
+                <p class="readme-letter-text" id="readme-line10"></p>
+                <p class="readme-letter-text" id="readme-line11"></p>
+            </div>
+        </div>
+
+        <!-- Gallery Section -->
+        <div class="menu-content" id="gallerySection">
+            <h2 class="section-title">📸 Clip Foto kamu yang diam diam saya simpan</h2>
+            <div class="video-player" id="videoPlayer" style="display: none;">
+                <video id="galleryVideo" controls>
+                    <source id="galleryVideoSource" src="" type="video/mp4">
+                </video>
+                <button class="close-video-btn">×</button>
+            </div>
+            <div class="photo-book-container">
+                <div class="book">
+                    <input type="checkbox" id="c1">
+                    <input type="checkbox" id="c2">
+                    <input type="checkbox" id="c3">
+                    <input type="checkbox" id="c4">
+                    <input type="checkbox" id="c5">
+                    <input type="checkbox" id="c6">
+                    <div id="cover">
+                        <div class="front">
+                            <img src="cover/cp.png" alt="Front Cover">
+                        </div>
+                        <div class="back">
+                            <img src="cover/c1.png" alt="Back 1">
+                        </div>
+                        <label class="next-btn" for="c1"><i class="fas fa-arrow-right"></i></label>
+                    </div>
+                    <div class="flip" id="p1">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/1.png" alt="Main Photo 1" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b1.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            <label class="next-btn" for="c2"><i class="fas fa-arrow-right"></i></label>
+                        </div>
+                        <div class="back">
+                            <img src="cover/c2.png" alt="Back 2">
+                            <label class="back-btn" for="c1"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                    <div class="flip" id="p2">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/2.png" alt="Main Photo 2" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b2.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            <label class="next-btn" for="c3"><i class="fas fa-arrow-right"></i></label>
+                        </div>
+                        <div class="back">
+                            <img src="cover/c3.png" alt="Back 3">
+                            <label class="back-btn" for="c2"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                    <div class="flip" id="p3">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/3.png" alt="Main Photo 3" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b3.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            <label class="next-btn" for="c4"><i class="fas fa-arrow-right"></i></label>
+                        </div>
+                        <div class="back">
+                            <img src="cover/c4.png" alt="Back 4">
+                            <label class="back-btn" for="c3"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                    <div class="flip" id="p4">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/4.png" alt="Main Photo 4" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b4.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            <label class="next-btn" for="c5"><i class="fas fa-arrow-right"></i></label>
+                        </div>
+                        <div class="back">
+                            <img src="cover/c5.png" alt="Back 5">
+                            <label class="back-btn" for="c4"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                    <div class="flip" id="p5">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/5.png" alt="Main Photo 5" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b5.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            <label class="next-btn" for="c6"><i class="fas fa-arrow-right"></i></label>
+                        </div>
+                        <div class="back">
+                            <img src="cover/c6.png" alt="Back 6">
+                            <label class="back-btn" for="c5"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                    <div id="back-cover">
+                        <div class="front">
+                            <div class="page-right">
+                                <div class="main-photo">
+                                    <img src="imgbook/6.png" alt="Main Photo 6" class="main-img">
+                                    <button class="play-video-btn" data-video="vdbook/b6.mp4">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" alt="Play"
+                                            class="play-icon">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <img src="cover/caa.png" alt="Back Cover">
+                            <label class="back-btn" for="c6"><i class="fas fa-arrow-left"></i></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Popup -->
+            <div id="errorPopup" class="popup">
+                <p>Oops! Kata Sandi Salah 😔 <br> Coba lagi ya, ini rahasia spesial!</p>
+                <button onclick="closeErrorPopup()">Tutup</button>
+            </div>
+        </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Background Music Handler
+        function initializeBackgroundMusic() {
+            const mainMenu = document.getElementById('mainMenu');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const playMusicBtn = document.getElementById('playMusicBtn');
+
+            if (!mainMenu || !backgroundMusic || !playMusicBtn) return;
+
+            backgroundMusic.volume = 0.3;
+            let hasPlayed = false;
+
+            const playMusic = () => {
+                if (!hasPlayed) {
+                    backgroundMusic.play().then(() => {
+                        hasPlayed = true;
+                        playMusicBtn.style.display = 'none';
+                    }).catch(() => {
+                        playMusicBtn.style.display = 'block';
+                    });
+                }
+            };
+
+            playMusicBtn.addEventListener('click', playMusic);
+        }
+
+        // Response Handler
+        function initializeResponseHandler() {
+            const responseInput = document.getElementById('responseInput');
+            const submitResponseBtn = document.getElementById('submitResponseBtn');
+            const responseDisplay = document.getElementById('responseDisplay');
+            const whatsappNumber = '6282164924290';
+
+            if (!responseInput || !submitResponseBtn || !responseDisplay) return;
+
+            submitResponseBtn.addEventListener('click', () => {
+                const responseText = responseInput.value.trim();
+                if (responseText !== '') {
+                    responseDisplay.textContent = 'Jawaban Anda berhasil dikirim';
+                    responseInput.value = '';
+                    const whatsappMessage = `Halo *Annonymus*... Jawaban dari Aku : ${responseText}`;
+                    const encodedMessage = encodeURIComponent(whatsappMessage);
+                    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+                    window.location.href = whatsappURL;
+                }
+            });
+        }
+
+        // General Script
+        const correctPin = "09042003";
+        let currentPosition = 0;
+        const photos = [
+            'imgPIN/p1.png',
+            'imgPIN/p2.png',
+            'imgPIN/p3.png',
+            'imgPIN/p4.png',
+            'imgPIN/p5.png',
+            'imgPIN/p6.png',
+            'imgPIN/p7.png',
+            'imgPIN/p8.png'
+        ];
+
+        const pinInput = document.getElementById('pinInput');
+        const photo = document.getElementById('photo');
+        const mainContent = document.getElementById('mainContent');
+        const numberButtons = document.querySelectorAll('.number-button');
+        const delButton = document.getElementById('delButton');
+        const noButton = document.getElementById('noButton');
+        const okButton = document.getElementById('okButton');
+        const funnyPopup = document.getElementById('customPopupId');
+        const loadingLove = document.getElementById('loadingLove');
+        const loadingText = document.getElementById('loadingText');
+        const clickSound = document.getElementById('clickSound');
+
+        function typeLoadingText() {
+            const text = "Loading Love...";
+            let index = 0;
+            loadingText.textContent = '';
+
+            function type() {
+                if (index < text.length) {
+                    loadingText.textContent += text[index];
+                    index++;
+                    setTimeout(type, 100);
+                } else {
+                    setTimeout(() => {
+                        loadingText.textContent = '';
+                        index = 0;
+                        type();
+                    }, 500);
+                }
+            }
+            type();
+        }
+
+        function initializePin() {
+            numberButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (pinInput.value.length < pinInput.maxLength) {
+                        pinInput.value += button.getAttribute('data-number');
+                        currentPosition = pinInput.value.length - 1;
+                        if (currentPosition < photos.length) photo.src = photos[currentPosition];
+                        if (clickSound) {
+                            clickSound.currentTime = 0;
+                            clickSound.play().catch(err => console.error("Error playing click sound:", err));
+                        }
+                    }
+                });
+            });
+
+            delButton.addEventListener('click', () => {
+                pinInput.value = pinInput.value.slice(0, -1);
+                currentPosition = Math.max(0, currentPosition - 1);
+                photo.src = photos[currentPosition] || photos[0];
+            });
+
+            noButton.addEventListener('click', () => {
+                pinInput.value = '';
+                currentPosition = 0;
+                photo.src = photos[0];
+            });
+
+            okButton.addEventListener('click', () => {
+                if (pinInput.value === correctPin) {
+                    loadingLove.style.display = 'flex';
+                    document.querySelector('.pin-container').style.display = 'none';
+                    typeLoadingText();
+
+                    setTimeout(() => {
+                        loadingLove.classList.add('hidden');
+                        loadingLove.style.display = 'none';
+                        mainContent.classList.add('active');
+                        initializeMenu();
+                    }, 2000);
+                } else {
+                    okButton.classList.add('shake');
+                    setTimeout(() => okButton.classList.remove('shake'), 500);
+                    funnyPopup.style.display = 'block';
+                    setTimeout(() => funnyPopup.style.display = 'none', 2000);
+                }
+            });
+        }
+
+        function initializeMenu() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const secretNotif = document.getElementById('secretNotif');
+            const confirmSecretBtn = document.getElementById('confirmSecretBtn');
+            const cancelSecretBtn = document.getElementById('cancelSecretBtn');
+            let selectedTarget = null;
+
+            menuItems.forEach(item => {
+                item.removeEventListener('click', handleMenuClick);
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = item.getAttribute('data-target');
+                    if (target === 'mainMenu') {
+                        secretNotif.style.display = 'block';
+                        selectedTarget = target;
+                    } else {
+                        handleMenuClick.call(item);
+                        closePasswordPopup();
+                        secretNotif.style.display = 'none';
+                    }
+                });
+            });
+
+            confirmSecretBtn.addEventListener('click', () => {
+                secretNotif.style.display = 'none';
+                if (selectedTarget === 'mainMenu') {
+                    showPasswordPopup();
+                }
+            });
+
+            cancelSecretBtn.addEventListener('click', () => {
+                secretNotif.style.display = 'none';
+                selectedTarget = null;
+            });
+        }
+
+        function handleMenuClick() {
+            const target = this.getAttribute('data-target');
+            document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active'));
+            const targetSection = document.getElementById(target);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                if (target === 'readmeSection') {
+                    startTypingEffect();
+                } else if (target === 'gallerySection') {
+                    initializeGallery();
+                    // Langsung scroll ke konten gallery
+                    setTimeout(() => targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    }), 100);
+                }
+            }
+        }
+
+        function startTypingEffect() {
+            const lines = document.querySelectorAll('.readme-letter-text');
+            lines.forEach(line => line.textContent = '');
+            let currentLine = 0,
+                currentChar = 0,
+                timeoutIds = [];
+
+            function stopTyping() {
+                timeoutIds.forEach(id => clearTimeout(id));
+                timeoutIds = [];
+            }
+            stopTyping();
+
+            function typeLine() {
+                if (currentLine < lines.length) {
+                    const line = lines[currentLine];
+                    const text = line.getAttribute('id') === 'readme-line5' || line.getAttribute('id') === 'readme-line9' ? ' ' :
+                        line.getAttribute('id').replace('readme-line', '') === '1' ? 'Kepada Ryrea,' :
+                        line.getAttribute('id').replace('readme-line', '') === '2' ? 'Sebelum ada orang lain yang hadir dalam hidupmu, aku sudah diam-diam tertarik padamu karena kamu beda dengan wanita yang pernah saya temui.' :
+                        line.getAttribute('id').replace('readme-line', '') === '3' ? 'Aku menyimpan perasaan ini dalam hati, tapi rasa takut membuatku ragu untuk mengungkapkannya.' :
+                        line.getAttribute('id').replace('readme-line', '') === '4' ? 'Hingga saat ini, aku hanya bisa mencintaimu dari jauh, mengingat setiap momen kecil yang pernah saya rasakan bersamamu walaupun singkat itu sangat berarti bagiku.' :
+                        line.getAttribute('id').replace('readme-line', '') === '6' ? 'Aku akan terus menyayangimu dengan tulus, tanpa mengharapkan balasan, bahkan di tengah kesunyianku sendiri.' :
+                        line.getAttribute('id').replace('readme-line', '') === '7' ? 'Perasaan ini adalah harapan yang kupegang erat, dan aku tak ingin mengganggu kebahagiaanmu saat ini.' :
+                        line.getAttribute('id').replace('readme-line', '') === '8' ? 'Hubunganmu yang ada adalah pilihanmu, dan aku hanya ingin menjadi seseorang yang menjaga perasaan ini dalam diam, tanpa mengubah apa pun.' :
+                        line.getAttribute('id').replace('readme-line', '') === '10' ? 'Dengan hati yang tulus, aku harap kamu tahu bahwa kehadiranmu selalu punya tempat di pikiranku.' :
+                        'Teruslah menjadi dirimu sendiri, Ryrea, karena perasaan ini akan tetap ada, meski tak pernah diucapkan.';
+
+                    if (currentChar === 0) line.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    if (currentChar < text.length) {
+                        line.textContent += text[currentChar];
+                        currentChar++;
+                        timeoutIds.push(setTimeout(typeLine, 50));
+                    } else {
+                        currentChar = 0;
+                        currentLine++;
+                        timeoutIds.push(setTimeout(typeLine, 500));
+                    }
+                }
+            }
+            typeLine();
+        }
+
+        const passwordPopup = document.getElementById('passwordPopup');
+        const passwordInput = document.getElementById('passwordInput');
+        const mainMenu = document.getElementById('mainMenu');
+        const errorPopup = document.getElementById('errorPopup');
+
+        function showPasswordPopup() {
+            passwordPopup.style.display = 'block';
+            passwordInput.focus();
+        }
+
+        function checkPassword() {
+            const password = passwordInput.value.trim();
+            if (password === "SIDORUS") {
+                document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active'));
+                mainMenu.classList.add('active');
+                closePasswordPopup();
+                passwordInput.value = '';
+                setTimeout(() => mainMenu.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                }), 100);
+                initializeBackgroundMusic();
+            } else {
+                showErrorPopup();
+                passwordInput.value = '';
+            }
+        }
+
+        function closePasswordPopup() {
+            passwordPopup.style.display = 'none';
+        }
+
+        function showErrorPopup() {
+            errorPopup.style.display = 'block';
+            setTimeout(closeErrorPopup, 2500);
+        }
+
+        function closeErrorPopup() {
+            errorPopup.style.display = 'none';
+            passwordPopup.style.display = 'block';
+            passwordInput.focus();
+        }
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        const audio = document.getElementById('audio');
+        const playPauseButton = document.getElementById('playPauseButton');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        const rewindButton = document.getElementById('rewindButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const progress = document.getElementById('progress');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const durationDisplay = document.getElementById('duration');
+        const backgroundVideo = document.getElementById('backgroundVideo');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const galleryVideo = document.getElementById('galleryVideo');
+        const galleryVideoSource = document.getElementById('galleryVideoSource');
+
+        if (audio) audio.volume = 0.5;
+        if (backgroundVideo) {
+            backgroundVideo.muted = true;
+            backgroundVideo.loop = true;
+            backgroundVideo.preload = 'auto';
+        }
+        if (backgroundMusic) backgroundMusic.volume = 0.3;
+        if (clickSound) clickSound.volume = 0.5;
+
+        function updatePlayPauseIcon(isPlaying) {
+            if (playPauseIcon) {
+                playPauseIcon.src = isPlaying ? 'https://cdn-icons-png.flaticon.com/512/107/107733.png' : 'https://cdn-icons-png.flaticon.com/512/0/375.png';
+            }
+        }
+
+        function stopOtherMedia(except) {
+            if (except !== audio && audio) {
+                audio.pause();
+                updatePlayPauseIcon(false);
+                if (backgroundVideo) backgroundVideo.pause();
+            }
+            if (except !== backgroundVideo && backgroundVideo) backgroundVideo.pause();
+            if (except !== galleryVideo && galleryVideo) {
+                galleryVideo.pause();
+                videoPlayer.style.display = 'none';
+            }
+            if (except !== backgroundMusic && backgroundMusic) backgroundMusic.pause();
+        }
+
+        if (playPauseButton) {
+            playPauseButton.addEventListener('click', () => {
+                if (audio.paused) {
+                    stopOtherMedia(audio);
+                    audio.play().then(() => {
+                        if (backgroundVideo) backgroundVideo.play().catch(err => console.error("Error playing video:", err));
+                        updatePlayPauseIcon(true);
+                    }).catch(err => console.error("Error playing audio:", err));
+                } else {
+                    audio.pause();
+                    if (backgroundVideo) backgroundVideo.pause();
+                    updatePlayPauseIcon(false);
+                }
+            });
+        }
+
+        if (rewindButton) {
+            rewindButton.addEventListener('click', () => {
+                const newTime = Math.max(0, audio.currentTime - 10);
+                audio.currentTime = newTime;
+                if (backgroundVideo) backgroundVideo.currentTime = newTime;
+            });
+        }
+
+        if (forwardButton) {
+            forwardButton.addEventListener('click', () => {
+                const newTime = Math.min(audio.duration, audio.currentTime + 10);
+                audio.currentTime = newTime;
+                if (backgroundVideo) backgroundVideo.currentTime = newTime;
+            });
+        }
+
+        if (audio) {
+            audio.addEventListener('timeupdate', () => {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                currentTimeDisplay.textContent = formatTime(audio.currentTime);
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationDisplay.textContent = formatTime(audio.duration);
+            });
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Gallery Script
+        function initializeGallery() {
+            const playButtons = document.querySelectorAll('.play-video-btn');
+            const closeVideoBtn = document.querySelector('.close-video-btn');
+
+            resetGallery();
+
+            playButtons.forEach(button => {
+                button.removeEventListener('click', playVideoHandler);
+                button.addEventListener('click', playVideoHandler);
+            });
+
+            if (closeVideoBtn) {
+                closeVideoBtn.removeEventListener('click', closeVideoHandler);
+                closeVideoBtn.addEventListener('click', closeVideoHandler);
+            }
+
+            if (videoPlayer) {
+                videoPlayer.removeEventListener('click', videoPlayerClickHandler);
+                videoPlayer.addEventListener('click', videoPlayerClickHandler);
+            }
+        }
+
+        function playVideoHandler(e) {
+            e.stopPropagation();
+            const videoSrc = this.getAttribute('data-video');
+            stopOtherMedia(galleryVideo);
+            galleryVideoSource.src = videoSrc;
+            galleryVideo.load();
+            galleryVideo.muted = false;
+            galleryVideo.volume = 1.0;
+            videoPlayer.style.display = 'block';
+            galleryVideo.play().catch(err => console.error("Error playing video:", err));
+            setTimeout(() => videoPlayer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            }), 100);
+        }
+
+        function closeVideoHandler() {
+            videoPlayer.style.display = 'none';
+            galleryVideo.pause();
+            galleryVideoSource.src = '';
+            galleryVideo.load();
+        }
+
+        function videoPlayerClickHandler(e) {
+            if (e.target === videoPlayer) {
+                videoPlayer.style.display = 'none';
+                galleryVideo.pause();
+                galleryVideoSource.src = '';
+                galleryVideo.load();
+            }
+        }
+
+        function resetGallery() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const flips = document.querySelectorAll('.flip');
+            const cover = document.getElementById('cover');
+            const backCover = document.getElementById('back-cover');
+            const labels = document.querySelectorAll('.flip label, #cover label, #back-cover label');
+
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+            flips.forEach(flip => {
+                flip.style.transform = 'rotateY(0deg)';
+                flip.style.zIndex = flip.id === 'p1' ? 6 : flip.id === 'p2' ? 5 : flip.id === 'p3' ? 4 :
+                    flip.id === 'p4' ? 3 : flip.id === 'p5' ? 2 : 1;
+            });
+            cover.style.transform = 'rotateY(0deg)';
+            cover.style.zIndex = 7;
+            backCover.style.transform = 'rotateY(0deg)';
+            backCover.style.zIndex = 0;
+            videoPlayer.style.display = 'none';
+            galleryVideo.pause();
+            galleryVideoSource.src = '';
+            galleryVideo.load();
+
+            labels.forEach(label => {
+                label.removeEventListener('click', labelClickHandler);
+                label.addEventListener('click', labelClickHandler);
+            });
+        }
+
+        function labelClickHandler(e) {
+            e.stopPropagation();
+            const checkbox = document.querySelector(`#${this.getAttribute('for')}`);
+            const flip = this.closest('.flip');
+            const cover = document.getElementById('cover');
+            const backCover = document.getElementById('back-cover');
+            const allFlips = document.querySelectorAll('.flip');
+            const currentCheckboxId = this.getAttribute('for');
+            const currentPageNum = parseInt(currentCheckboxId.replace('c', ''));
+
+            if (this.classList.contains('next-btn') && !checkbox.checked) {
+                checkbox.checked = true;
+                if (flip) {
+                    flip.style.transform = 'rotateY(-180deg)';
+                    flip.style.zIndex = 10;
+                }
+                if (checkbox.id === 'c1') {
+                    cover.style.transform = 'rotateY(-180deg)';
+                    cover.style.zIndex = 0;
+                }
+                allFlips.forEach(otherFlip => {
+                    const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
+                    if (otherPageNum > currentPageNum) {
+                        otherFlip.style.zIndex = 6 - (otherPageNum - 1);
+                        otherFlip.style.transform = 'rotateY(0deg)';
+                    }
+                });
+            } else if (this.classList.contains('back-btn') && checkbox.checked) {
+                checkbox.checked = false;
+                if (flip) {
+                    flip.style.transform = 'rotateY(0deg)';
+                    flip.style.zIndex = 7 - currentPageNum;
+                }
+                if (currentCheckboxId === 'c1') {
+                    cover.style.transform = 'rotateY(0deg)';
+                    cover.style.zIndex = 7;
+                    allFlips.forEach(f => f.style.transform = 'rotateY(0deg)');
+                } else {
+                    const prevPageNum = currentPageNum - 1;
+                    const prevCheckbox = document.querySelector(`#c${prevPageNum}`);
+                    if (prevCheckbox) {
+                        prevCheckbox.checked = true;
+                        if (prevPageNum === 1) {
+                            cover.style.transform = 'rotateY(-180deg)';
+                            cover.style.zIndex = 0;
+                            const p1 = document.querySelector('#p1');
+                            p1.style.transform = 'rotateY(-180deg)';
+                            p1.style.zIndex = 10;
+                        } else {
+                            const prevFlip = document.querySelector(`#p${prevPageNum}`);
+                            if (prevFlip) {
+                                prevFlip.style.transform = 'rotateY(-180deg)';
+                                prevFlip.style.zIndex = 10;
+                            }
+                        }
+                    }
+                    allFlips.forEach(otherFlip => {
+                        const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
+                        if (otherFlip.style.zIndex !== '10') {
+                            otherFlip.style.zIndex = 7 - otherPageNum;
+                        }
+                    });
+                }
+            }
+        }
+
+        // Initialize Everything
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeResponseHandler();
+            initializePin();
+            initializeGallery();
+        });
+    </script>
+</body>
+
+</html>
