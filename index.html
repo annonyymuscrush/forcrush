@@ -1137,6 +1137,9 @@
     <div id="downloadErrorPopup" class="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
         <p style="color: #ff3e7f; margin: 0;">Password salah! Coba lagi.</p>
     </div>
+    <div id="copySuccessPopup" class="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 10px 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
+        <p style="color: #4CAF50; margin: 0;">Kode disalin!</p>
+    </div>
 </div>
 
 
@@ -1520,17 +1523,18 @@ const accessCodeInput = document.getElementById('accessCodeInput');
 const submitAccessCode = document.getElementById('submitAccessCode');
 const generateCodeBtn = document.getElementById('generateCodeBtn');
 const getFreeBtn = document.getElementById('getFreeBtn');
-const downloadTemplateBtn = document.getElementById('downloadTemplateBtn'); // Tambah elemen baru
+const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
 const accessCodeMessage = document.getElementById('accessCodeMessage');
 const accessErrorPopup = document.getElementById('accessErrorPopup');
-const downloadErrorPopup = document.getElementById('downloadErrorPopup'); // Tambah elemen baru
+const downloadErrorPopup = document.getElementById('downloadErrorPopup');
+const copySuccessPopup = document.getElementById('copySuccessPopup'); // Tambah elemen baru
 const pinContainer = document.querySelector('.pin-container');
 const sidorszLink = document.getElementById('sidorszLink');
 const sidorszPopup = document.getElementById('sidorszPopup');
 
 const PREMIUM_CODE = 'DORZ-PREMIUM'; // Kode premium
 const DOWNLOAD_PASSWORD = 'SIDORSZ'; // Password untuk download
-const TEMPLATE_URL = 'https://drive.google.com/file/d/1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe/view?usp=sharing'; // URL unduhan langsung
+const TEMPLATE_URL = 'https://drive.google.com/uc?export=download&id=1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe'; // URL unduhan langsung (diperbaiki)
 
 function getGenerateCount() {
     return parseInt(localStorage.getItem('generateCount') || '0');
@@ -1551,6 +1555,16 @@ function generateRandomCode(length) {
     return result;
 }
 
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        copySuccessPopup.style.display = 'block';
+        setTimeout(() => copySuccessPopup.style.display = 'none', 1500);
+        console.log("Kode berhasil disalin:", text);
+    }).catch(err => {
+        console.error("Gagal menyalin kode:", err);
+    });
+}
+
 function generateCode() {
     let generateCount = getGenerateCount();
     
@@ -1567,10 +1581,17 @@ function generateCode() {
         localStorage.setItem('accessData', JSON.stringify(codeData));
         
         accessCodeMessage.innerHTML = `
-            Kode: ${code}<br>Berlaku sampai: ${expiry.toLocaleString()}<br>Percobaan tersisa: ${10 - generateCount - 1}
+            Kode: <span id="generatedCode">${code}</span> 
+            <span id="copyIcon" style="cursor: pointer; margin-left: 5px;" title="Salin kode">📋</span><br>
+            Berlaku sampai: ${expiry.toLocaleString()}<br>
+            Percobaan tersisa: ${10 - generateCount - 1}
         `;
         accessCodeInput.value = '';
         console.log("Kode Akses Tersimpan:", codeData);
+        
+        // Tambahkan event listener untuk ikon copy setelah elemen dibuat
+        const copyIcon = document.getElementById('copyIcon');
+        copyIcon.addEventListener('click', () => copyToClipboard(code));
         
         incrementGenerateCount();
     } else {
@@ -1691,10 +1712,9 @@ function resetButtonPosition() {
 function downloadTemplate() {
     const enteredPassword = prompt("Masukkan password untuk mendownload template:");
     if (enteredPassword === DOWNLOAD_PASSWORD) {
-        // Membuat elemen <a> sementara untuk memicu unduhan langsung
         const link = document.createElement('a');
         link.href = TEMPLATE_URL;
-        link.download = 'https://drive.google.com/file/d/1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe/view?usp=sharing'; // Nama file akan diambil dari server
+        link.download = ''; // Nama file diambil dari server
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -1711,7 +1731,7 @@ accessCodeInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') validateAccessCode();
 });
 getFreeBtn.addEventListener('click', moveButton);
-downloadTemplateBtn.addEventListener('click', downloadTemplate); // Tambah event listener
+downloadTemplateBtn.addEventListener('click', downloadTemplate);
 
 document.addEventListener('DOMContentLoaded', () => {
     const storedData = localStorage.getItem('accessData');
