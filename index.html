@@ -1118,12 +1118,13 @@
 <body>
 
 <!-- Access Code Container -->
-<div id="access-code-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+<div id="access-code-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative;">
     <h2 style="color: #ff3e7f; font-weight: 600;">Masukkan Kode Akses</h2>
     <p style="color: #666; margin: 10px 0;">Generate kode terlebih dahulu jika belum punya!</p>
     <input type="text" id="accessCodeInput" maxlength="12" placeholder="Kode 12 karakter" style="font-size: 18px; padding: 12px; margin: 15px 0; border: 2px solid #ff6f91; border-radius: 10px; text-align: center; width: 80%; max-width: 200px; outline: none;">
     <button id="submitAccessCode" style="background: #ff6f91; color: white; padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">Submit</button>
     <button id="generateCodeBtn" style="background: #ff3e7f; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px;">Generate Kode</button>
+    <button id="getFreeBtn" style="background: #ffcc00; color: #333; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; transition: all 0.3s ease;">Get Free</button>
     <p id="accessCodeMessage" style="color: #ff3e7f; margin-top: 10px;"></p>
     <div id="accessErrorPopup" class="popup" style="display: none;">
         <p>Kode salah atau kedaluwarsa. Coba lagi!</p>
@@ -1511,25 +1512,25 @@ const accessCodeContainer = document.getElementById('access-code-container');
 const accessCodeInput = document.getElementById('accessCodeInput');
 const submitAccessCode = document.getElementById('submitAccessCode');
 const generateCodeBtn = document.getElementById('generateCodeBtn');
+const getFreeBtn = document.getElementById('getFreeBtn');
 const accessCodeMessage = document.getElementById('accessCodeMessage');
 const accessErrorPopup = document.getElementById('accessErrorPopup');
 const pinContainer = document.querySelector('.pin-container');
 const sidorszLink = document.getElementById('sidorszLink');
 const sidorszPopup = document.getElementById('sidorszPopup');
 
-// Fungsi untuk mendapatkan jumlah generate dari localStorage
+const PREMIUM_CODE = 'DORZ-PREMIUM'; // Kode premium
+
 function getGenerateCount() {
     return parseInt(localStorage.getItem('generateCount') || '0');
 }
 
-// Fungsi untuk menambah jumlah generate
 function incrementGenerateCount() {
     const count = getGenerateCount() + 1;
     localStorage.setItem('generateCount', count.toString());
     return count;
 }
 
-// Fungsi untuk generate kode acak 12 karakter (huruf besar, angka, simbol)
 function generateRandomCode(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
     let result = '';
@@ -1542,30 +1543,28 @@ function generateRandomCode(length) {
 function generateCode() {
     let generateCount = getGenerateCount();
     
-    if (generateCount < 2) {
-        // Generate kode 12 karakter
+    if (generateCount < 10) {
         const code = generateRandomCode(12);
         const expiry = new Date();
         expiry.setHours(expiry.getHours() + 12);
         
         const codeData = {
-            code: code, // Sudah string
+            code: code,
             expiry: expiry.getTime()
         };
         
         localStorage.setItem('accessData', JSON.stringify(codeData));
         
         accessCodeMessage.innerHTML = `
-            Kode: ${code}<br>Berlaku sampai: ${expiry.toLocaleString()}<br>Percobaan tersisa: ${2 - generateCount - 1}
+            Kode: ${code}<br>Berlaku sampai: ${expiry.toLocaleString()}<br>Percobaan tersisa: ${10 - generateCount - 1}
         `;
         accessCodeInput.value = '';
         console.log("Kode Akses Tersimpan:", codeData);
         
-        // Tambah jumlah generate
         incrementGenerateCount();
     } else {
         accessCodeMessage.innerHTML = `
-            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 2 kali). Hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
+            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
         `;
         generateCodeBtn.disabled = true;
         generateCodeBtn.style.background = '#ccc';
@@ -1585,23 +1584,34 @@ function validateAccessCode() {
     const enteredCode = accessCodeInput.value.trim();
     const storedData = localStorage.getItem('accessData');
     
-    console.log("Input pengguna:", enteredCode); // Debugging
+    console.log("Input pengguna:", enteredCode);
     
+    // Cek kode premium
+    if (enteredCode === PREMIUM_CODE) {
+        accessCodeContainer.style.display = 'none';
+        pinContainer.style.display = 'block';
+        accessCodeMessage.textContent = '';
+        console.log("Kode premium DORZ-PREMIUM digunakan, akses tanpa batas diberikan");
+        // Tidak ada checkExpiry untuk kode premium
+        return; // Keluar dari fungsi
+    }
+    
+    // Validasi kode biasa
     if (storedData) {
         const { code, expiry } = JSON.parse(storedData);
         const currentTime = new Date().getTime();
 
-        console.log("Kode tersimpan:", code); // Debugging
-        console.log("Waktu saat ini:", currentTime); // Debugging
-        console.log("Waktu kedaluwarsa:", expiry); // Debugging
+        console.log("Kode tersimpan:", code);
+        console.log("Waktu saat ini:", currentTime);
+        console.log("Waktu kedaluwarsa:", expiry);
 
         if (enteredCode === code && currentTime < expiry) {
-            // Kode valid, tampilkan pin-container
             accessCodeContainer.style.display = 'none';
             pinContainer.style.display = 'block';
             accessCodeMessage.textContent = '';
             localStorage.removeItem('accessData');
             console.log("Kode valid, melanjutkan ke pin-container");
+            checkExpiry(expiry);
         } else {
             accessErrorPopup.style.display = 'block';
             setTimeout(() => accessErrorPopup.style.display = 'none', 2000);
@@ -1616,37 +1626,94 @@ function validateAccessCode() {
     }
 }
 
-// Event Listeners untuk Access Code
+function checkExpiry(expiryTime) {
+    const checkInterval = setInterval(() => {
+        const currentTime = new Date().getTime();
+        if (currentTime >= expiryTime) {
+            clearInterval(checkInterval);
+            console.log("Waktu akses habis, mengeluarkan pengguna");
+            
+            pinContainer.style.display = 'none';
+            accessCodeContainer.style.display = 'flex';
+            accessCodeMessage.innerHTML = `
+                <p style="color: #ff3e7f;">Waktu akses Anda telah habis! Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses baru.</p>
+            `;
+            generateCodeBtn.disabled = true;
+            submitAccessCode.disabled = true;
+            accessCodeInput.disabled = true;
+            
+            setTimeout(() => {
+                sidorszPopup.style.display = 'block';
+                setTimeout(() => {
+                    sidorszPopup.style.display = 'none';
+                    window.open(sidorszLink.href, '_blank');
+                }, 2000);
+            }, 3000);
+        }
+    }, 1000);
+}
+
+// Logika untuk tombol Get Free
+function moveButton() {
+    getFreeBtn.style.position = 'absolute';
+    
+    const container = document.getElementById('access-code-container');
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    const btnWidth = getFreeBtn.offsetWidth;
+    const btnHeight = getFreeBtn.offsetHeight;
+
+    const maxX = containerWidth - btnWidth;
+    const maxY = containerHeight - btnHeight;
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    getFreeBtn.style.left = `${randomX}px`;
+    getFreeBtn.style.top = `${randomY}px`;
+}
+
+function resetButtonPosition() {
+    getFreeBtn.style.position = 'static';
+    getFreeBtn.style.left = 'auto';
+    getFreeBtn.style.top = 'auto';
+    getFreeBtn.style.transform = 'none';
+}
+
+// Event Listeners
 generateCodeBtn.addEventListener('click', generateCode);
 submitAccessCode.addEventListener('click', validateAccessCode);
 accessCodeInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') validateAccessCode();
 });
+getFreeBtn.addEventListener('click', moveButton);
 
-// Cek apakah kode sudah ada di localStorage saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
     const storedData = localStorage.getItem('accessData');
     if (storedData) {
         const { expiry } = JSON.parse(storedData);
-        if (new Date().getTime() > expiry) {
+        const currentTime = new Date().getTime();
+        if (currentTime > expiry) {
             localStorage.removeItem('accessData');
+        } else if (pinContainer.style.display === 'block') {
+            checkExpiry(expiry);
         }
     }
     
     const generateCount = getGenerateCount();
-    if (generateCount < 2) {
-        accessCodeMessage.innerHTML = `Percobaan generate tersisa: ${2 - generateCount}`;
+    if (generateCount < 10) {
+        accessCodeMessage.innerHTML = `Percobaan generate tersisa: ${10 - generateCount}`;
     } else {
         accessCodeMessage.innerHTML = `
-            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 2 kali). Hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
+            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
         `;
         generateCodeBtn.disabled = true;
         generateCodeBtn.style.background = '#ccc';
         generateCodeBtn.style.cursor = 'not-allowed';
     }
+
+    resetButtonPosition();
 });
 
-// Sidorsz Link Popup
 sidorszLink.addEventListener('click', (e) => {
     e.preventDefault();
     sidorszPopup.style.display = 'block';
