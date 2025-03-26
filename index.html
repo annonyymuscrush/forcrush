@@ -1130,9 +1130,18 @@
         <p>Kode salah atau kedaluwarsa. Coba lagi!</p>
     </div>
     <p style="color: #666; margin-top: 20px; font-size: 14px;">Untuk akses full atau edit sesuai request, silahkan hubungi admin <a href="https://wa.me/c/6287773573474" id="sidorszLink" target="_blank" style="color: #ff6f91; text-decoration: none; animation: glow 1.5s ease-in-out infinite; background: transparent;">@sidorsz<img src="https://i.pinimg.com/originals/2d/45/2b/2d452b477ab84aafa5f96c0bafa19fe7.gif" alt="GIF" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px; border: none; background: transparent;"></a></p>
+    <button id="downloadTemplateBtn" style="background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; transition: all 0.3s ease;">Download Template</button>
     <div id="sidorszPopup" class="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
         <p style="color: #ff3e7f; margin: 0;">Anda akan diarahkan ke WhatsApp admin @sidorsz!</p>
     </div>
+    <div id="downloadErrorPopup" class="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
+        <p style="color: #ff3e7f; margin: 0;">Password salah! Coba lagi.</p>
+    </div>
+</div>
+<!-- Pin Container (contoh, pastikan ada di HTML Anda) -->
+<div class="pin-container" style="display: none;">
+    <h2>Halaman Utama</h2>
+    <p>Selamat, Anda masuk!</p>
 </div>
 
     <!-- PIN Container -->
@@ -1507,19 +1516,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
     <script>
 
+        
+
       // Access Code Authentication
 const accessCodeContainer = document.getElementById('access-code-container');
 const accessCodeInput = document.getElementById('accessCodeInput');
 const submitAccessCode = document.getElementById('submitAccessCode');
 const generateCodeBtn = document.getElementById('generateCodeBtn');
 const getFreeBtn = document.getElementById('getFreeBtn');
+const downloadTemplateBtn = document.getElementById('downloadTemplateBtn'); // Tambah elemen baru
 const accessCodeMessage = document.getElementById('accessCodeMessage');
 const accessErrorPopup = document.getElementById('accessErrorPopup');
+const downloadErrorPopup = document.getElementById('downloadErrorPopup'); // Tambah elemen baru
 const pinContainer = document.querySelector('.pin-container');
 const sidorszLink = document.getElementById('sidorszLink');
 const sidorszPopup = document.getElementById('sidorszPopup');
 
 const PREMIUM_CODE = 'DORZ-PREMIUM'; // Kode premium
+const DOWNLOAD_PASSWORD = 'SIDORSZ'; // Password untuk download
+const TEMPLATE_URL = 'https://drive.google.com/file/d/1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe/view?usp=sharing'; // URL unduhan langsung
 
 function getGenerateCount() {
     return parseInt(localStorage.getItem('generateCount') || '0');
@@ -1586,17 +1601,14 @@ function validateAccessCode() {
     
     console.log("Input pengguna:", enteredCode);
     
-    // Cek kode premium
     if (enteredCode === PREMIUM_CODE) {
         accessCodeContainer.style.display = 'none';
         pinContainer.style.display = 'block';
         accessCodeMessage.textContent = '';
         console.log("Kode premium DORZ-PREMIUM digunakan, akses tanpa batas diberikan");
-        // Tidak ada checkExpiry untuk kode premium
-        return; // Keluar dari fungsi
+        return;
     }
     
-    // Validasi kode biasa
     if (storedData) {
         const { code, expiry } = JSON.parse(storedData);
         const currentTime = new Date().getTime();
@@ -1679,6 +1691,23 @@ function resetButtonPosition() {
     getFreeBtn.style.transform = 'none';
 }
 
+// Logika untuk tombol Download Template
+function downloadTemplate() {
+    const enteredPassword = prompt("Masukkan password untuk mendownload template:");
+    if (enteredPassword === DOWNLOAD_PASSWORD) {
+        // Membuat elemen <a> sementara untuk memicu unduhan langsung
+        const link = document.createElement('a');
+        link.href = TEMPLATE_URL;
+        link.download = 'https://drive.google.com/file/d/1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe/view?usp=sharing'; // Nama file akan diambil dari server
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        downloadErrorPopup.style.display = 'block';
+        setTimeout(() => downloadErrorPopup.style.display = 'none', 2000);
+    }
+}
+
 // Event Listeners
 generateCodeBtn.addEventListener('click', generateCode);
 submitAccessCode.addEventListener('click', validateAccessCode);
@@ -1686,6 +1715,7 @@ accessCodeInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') validateAccessCode();
 });
 getFreeBtn.addEventListener('click', moveButton);
+downloadTemplateBtn.addEventListener('click', downloadTemplate); // Tambah event listener
 
 document.addEventListener('DOMContentLoaded', () => {
     const storedData = localStorage.getItem('accessData');
@@ -1704,7 +1734,7 @@ document.addEventListener('DOMContentLoaded', () => {
         accessCodeMessage.innerHTML = `Percobaan generate tersisa: ${10 - generateCount}`;
     } else {
         accessCodeMessage.innerHTML = `
-            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
+            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
         `;
         generateCodeBtn.disabled = true;
         generateCodeBtn.style.background = '#ccc';
