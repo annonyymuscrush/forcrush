@@ -1073,6 +1073,28 @@
         .signature {
             margin: 0;
         }
+        .pin-container {
+    display: none; /* Sembunyikan pin-container sampai kode akses divalidasi */
+}
+
+/* Animasi glow untuk @sidorsz */
+@keyframes glow {
+            0% { text-shadow: 0 0 5px #ff6f91, 0 0 10px #ff6f91; }
+            50% { text-shadow: 0 0 10px #ff3e7f, 0 0 20px #ff3e7f, 0 0 30px #ff3e7f; }
+            100% { text-shadow: 0 0 5px #ff6f91, 0 0 10px #ff6f91; }
+        }
+
+        
+        img {
+    border: none !important;
+    background: transparent !important;
+}
+/* Pastikan GIF terus berjalan */
+#sidorszLink img {
+            border: none !important;
+            background: transparent !important;
+            animation: none !important; /* Tidak ada animasi CSS tambahan yang mengganggu */
+        }
     </style>
 
     <!-- Service Worker Registration -->
@@ -1088,10 +1110,30 @@
                 });
         });
     }
+
+    
     </script>
 </head>
 
 <body>
+
+<!-- Access Code Container -->
+<div id="access-code-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <h2 style="color: #ff3e7f; font-weight: 600;">Masukkan Kode Akses</h2>
+    <p style="color: #666; margin: 10px 0;">Generate kode terlebih dahulu jika belum punya!</p>
+    <input type="text" id="accessCodeInput" maxlength="12" placeholder="Kode 12 karakter" style="font-size: 18px; padding: 12px; margin: 15px 0; border: 2px solid #ff6f91; border-radius: 10px; text-align: center; width: 80%; max-width: 200px; outline: none;">
+    <button id="submitAccessCode" style="background: #ff6f91; color: white; padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">Submit</button>
+    <button id="generateCodeBtn" style="background: #ff3e7f; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px;">Generate Kode</button>
+    <p id="accessCodeMessage" style="color: #ff3e7f; margin-top: 10px;"></p>
+    <div id="accessErrorPopup" class="popup" style="display: none;">
+        <p>Kode salah atau kedaluwarsa. Coba lagi!</p>
+    </div>
+    <p style="color: #666; margin-top: 20px; font-size: 14px;">Untuk akses full atau edit sesuai request, silahkan hubungi admin <a href="https://wa.me/c/6287773573474" id="sidorszLink" target="_blank" style="color: #ff6f91; text-decoration: none; animation: glow 1.5s ease-in-out infinite; background: transparent;">@sidorsz<img src="https://i.pinimg.com/originals/2d/45/2b/2d452b477ab84aafa5f96c0bafa19fe7.gif" alt="GIF" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px; border: none; background: transparent;"></a></p>
+    <div id="sidorszPopup" class="popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000;">
+        <p style="color: #ff3e7f; margin: 0;">Anda akan diarahkan ke WhatsApp admin @sidorsz!</p>
+    </div>
+</div>
+
     <!-- PIN Container -->
     <div class="pin-container">
         <h2 style="color: #ff3e7f; font-weight: 600;">Masukkan PIN <br> Tgl kamu 😊</h2>
@@ -1463,6 +1505,157 @@
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
     <script>
+
+      // Access Code Authentication
+const accessCodeContainer = document.getElementById('access-code-container');
+const accessCodeInput = document.getElementById('accessCodeInput');
+const submitAccessCode = document.getElementById('submitAccessCode');
+const generateCodeBtn = document.getElementById('generateCodeBtn');
+const accessCodeMessage = document.getElementById('accessCodeMessage');
+const accessErrorPopup = document.getElementById('accessErrorPopup');
+const pinContainer = document.querySelector('.pin-container');
+const sidorszLink = document.getElementById('sidorszLink');
+const sidorszPopup = document.getElementById('sidorszPopup');
+
+// Fungsi untuk mendapatkan jumlah generate dari localStorage
+function getGenerateCount() {
+    return parseInt(localStorage.getItem('generateCount') || '0');
+}
+
+// Fungsi untuk menambah jumlah generate
+function incrementGenerateCount() {
+    const count = getGenerateCount() + 1;
+    localStorage.setItem('generateCount', count.toString());
+    return count;
+}
+
+// Fungsi untuk generate kode acak 12 karakter (huruf besar, angka, simbol)
+function generateRandomCode(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+function generateCode() {
+    let generateCount = getGenerateCount();
+    
+    if (generateCount < 2) {
+        // Generate kode 12 karakter
+        const code = generateRandomCode(12);
+        const expiry = new Date();
+        expiry.setHours(expiry.getHours() + 12);
+        
+        const codeData = {
+            code: code, // Sudah string
+            expiry: expiry.getTime()
+        };
+        
+        localStorage.setItem('accessData', JSON.stringify(codeData));
+        
+        accessCodeMessage.innerHTML = `
+            Kode: ${code}<br>Berlaku sampai: ${expiry.toLocaleString()}<br>Percobaan tersisa: ${2 - generateCount - 1}
+        `;
+        accessCodeInput.value = '';
+        console.log("Kode Akses Tersimpan:", codeData);
+        
+        // Tambah jumlah generate
+        incrementGenerateCount();
+    } else {
+        accessCodeMessage.innerHTML = `
+            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 2 kali). Hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
+        `;
+        generateCodeBtn.disabled = true;
+        generateCodeBtn.style.background = '#ccc';
+        generateCodeBtn.style.cursor = 'not-allowed';
+        
+        setTimeout(() => {
+            sidorszPopup.style.display = 'block';
+            setTimeout(() => {
+                sidorszPopup.style.display = 'none';
+                window.open(sidorszLink.href, '_blank');
+            }, 2000);
+        }, 1000);
+    }
+}
+
+function validateAccessCode() {
+    const enteredCode = accessCodeInput.value.trim();
+    const storedData = localStorage.getItem('accessData');
+    
+    console.log("Input pengguna:", enteredCode); // Debugging
+    
+    if (storedData) {
+        const { code, expiry } = JSON.parse(storedData);
+        const currentTime = new Date().getTime();
+
+        console.log("Kode tersimpan:", code); // Debugging
+        console.log("Waktu saat ini:", currentTime); // Debugging
+        console.log("Waktu kedaluwarsa:", expiry); // Debugging
+
+        if (enteredCode === code && currentTime < expiry) {
+            // Kode valid, tampilkan pin-container
+            accessCodeContainer.style.display = 'none';
+            pinContainer.style.display = 'block';
+            accessCodeMessage.textContent = '';
+            localStorage.removeItem('accessData');
+            console.log("Kode valid, melanjutkan ke pin-container");
+        } else {
+            accessErrorPopup.style.display = 'block';
+            setTimeout(() => accessErrorPopup.style.display = 'none', 2000);
+            accessCodeInput.value = '';
+            console.log("Kode salah atau kedaluwarsa");
+        }
+    } else {
+        accessErrorPopup.style.display = 'block';
+        setTimeout(() => accessErrorPopup.style.display = 'none', 2000);
+        accessCodeInput.value = '';
+        console.log("Tidak ada kode tersimpan di localStorage");
+    }
+}
+
+// Event Listeners untuk Access Code
+generateCodeBtn.addEventListener('click', generateCode);
+submitAccessCode.addEventListener('click', validateAccessCode);
+accessCodeInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') validateAccessCode();
+});
+
+// Cek apakah kode sudah ada di localStorage saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    const storedData = localStorage.getItem('accessData');
+    if (storedData) {
+        const { expiry } = JSON.parse(storedData);
+        if (new Date().getTime() > expiry) {
+            localStorage.removeItem('accessData');
+        }
+    }
+    
+    const generateCount = getGenerateCount();
+    if (generateCount < 2) {
+        accessCodeMessage.innerHTML = `Percobaan generate tersisa: ${2 - generateCount}`;
+    } else {
+        accessCodeMessage.innerHTML = `
+            <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 2 kali). Hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
+        `;
+        generateCodeBtn.disabled = true;
+        generateCodeBtn.style.background = '#ccc';
+        generateCodeBtn.style.cursor = 'not-allowed';
+    }
+});
+
+// Sidorsz Link Popup
+sidorszLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    sidorszPopup.style.display = 'block';
+    
+    setTimeout(() => {
+        sidorszPopup.style.display = 'none';
+        window.open(sidorszLink.href, '_blank');
+    }, 2000);
+});
         // Tunggu hingga library html2pdf dimuat
         window.addEventListener("load", function () {
             if (typeof html2pdf === "undefined") {
