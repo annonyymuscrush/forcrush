@@ -38,17 +38,34 @@
         }
 
         .pin-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            width: 400px;
-            position: relative;
-            overflow-y: auto;
-            transition: all 0.3s ease;
-            display: none; /* Sembunyikan pin-container sampai kode akses divalidasi */
-        }
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    max-width: 100%; /* Diperlebar untuk full mobile */
+    width: 100%; /* Mengisi seluruh lebar layar */
+    position: relative;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    display: none; /* Sembunyikan pin-container sampai kode akses divalidasi */
+}
+
+@media (max-width: 600px) {
+    .pin-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px; /* Dikurangi sedikit untuk ruang konten lebih banyak */
+        border-radius: 15px; /* Sedikit diperkecil untuk estetika mobile */
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px; /* Dikurangi untuk lebih banyak ruang konten */
+        height: 100vh; /* Pastikan full height di mobile */
+        border-radius: 15px; /* Sedikit diperkecil untuk estetika mobile */
+    }
+}
 
         #photo-container {
             width: 100%;
@@ -121,20 +138,20 @@
         }
 
         .main-content {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            width: 95%;
-            max-width: 450px;
-            height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            transition: all 0.3s ease;
-            padding-top: 40px; /* Berikan ruang untuk pemisah atas */
-            z-index: 10; /* Di bawah popup tetapi di atas konten biasa */
-        }
+    display: none;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px; /* Dikurangi sedikit agar lebih banyak ruang konten */
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Diperlebar untuk full mobile */
+    max-width: 100%; /* Mengisi seluruh lebar layar */
+    height: 100vh; /* Diperpanjang untuk full height mobile */
+    overflow-y: auto;
+    position: relative;
+    transition: all 0.3s ease;
+    padding-top: 40px; /* Berikan ruang untuk pemisah atas */
+    z-index: 10; /* Di bawah popup tetapi di atas konten biasa */
+}
 
         .main-content.active {
             display: block;
@@ -2359,6 +2376,7 @@ function handleMenuClick() {
         }
     }
 }
+
 // Elemen untuk popup kata sandi menu
 const passwordPopup = document.getElementById('passwordPopup'); // Popup kata sandi
 const passwordInput = document.getElementById('passwordInput'); // Input kata sandi
