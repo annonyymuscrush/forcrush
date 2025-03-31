@@ -34,6 +34,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: url('http://www.rw-designer.com/cursor-view/176188.png'), auto;
         }
 
         .pin-container {
@@ -46,6 +47,7 @@
             position: relative;
             overflow-y: auto;
             transition: all 0.3s ease;
+            display: none; /* Sembunyikan pin-container sampai kode akses divalidasi */
         }
 
         #photo-container {
@@ -130,6 +132,8 @@
             overflow-y: auto;
             position: relative;
             transition: all 0.3s ease;
+            padding-top: 40px; /* Berikan ruang untuk pemisah atas */
+            z-index: 10; /* Di bawah popup tetapi di atas konten biasa */
         }
 
         .main-content.active {
@@ -143,6 +147,20 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .notice-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            max-width: 200px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255, 111, 145, 0), rgba(255, 111, 145, 0.6), rgba(255, 111, 145, 0));
         }
 
         #photoSectionUnique {
@@ -150,11 +168,27 @@
             max-width: 300px;
             margin: 20px auto;
             overflow: hidden;
+            position: relative;
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+
+        #photoSectionUnique::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            max-width: 280px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff3e7f, transparent);
+            border-radius: 5px;
         }
 
         #photoFrameUnique {
             display: flex;
-            animation: slide 16s linear infinite;
+            animation: slide 25s linear infinite;
             width: calc(150px * 8 + 10px * 7);
         }
 
@@ -195,6 +229,22 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            margin-top: 30px;
+            padding-top: 20px;
+            z-index: 20; /* Di atas main-content tapi di bawah popup */
+        }
+
+        .music-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            max-width: 300px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255, 62, 127, 0), rgba(255, 62, 127, 0.8), rgba(255, 62, 127, 0));
+            box-shadow: 0 2px 10px rgba(255, 111, 145, 0.3);
         }
 
         .background-video {
@@ -295,28 +345,54 @@
         }
 
         .menu {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            position: relative;
+            margin: 20px 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            gap: 20px !important;
+            flex-wrap: wrap !important;
+            position: relative !important;
+            margin-top: 30px;
+            padding-top: 20px;
+            z-index: 30; /* Di atas music-player tapi di bawah hover-popup */
         }
 
+        .menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 350px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff6f91, transparent);
+            border-radius: 5px;
+        }
+
+        /* Pastikan Menu Item Teks di Bawah Ikon */
         .menu-item {
             background: #fff;
             color: #ff3e7f;
-            padding: 12px 20px;
+            padding: 15px;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             font-size: 16px;
             position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            width: 80px !important;
+            height: 80px !important;
+            text-align: center !important;
+            z-index: 40; /* Di atas menu tapi di bawah hover-popup */
+        }
+
+        .menu-item i {
+            font-size: 24px !important;
         }
 
         .menu-item:hover {
@@ -326,15 +402,10 @@
             box-shadow: 0 6px 20px rgba(255, 62, 127, 0.3);
         }
 
-        .menu-item i {
-            font-size: 18px;
-        }
-
         .hover-popup {
             display: none;
             position: absolute;
             bottom: 100%;
-            top: auto;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
@@ -345,12 +416,37 @@
             font-size: 10px;
             width: 140px;
             text-align: center;
-            z-index: 10;
-            margin-bottom: 5px;
+            z-index: 1500; /* Nilai lebih tinggi dari semua elemen lain */
+            margin-bottom: 10px;
         }
 
         .menu-item:hover .hover-popup {
             display: block;
+        }
+
+        /* Responsivitas untuk Menu */
+        @media (max-width: 600px) {
+            .menu-item {
+                width: 70px !important;
+                height: 70px !important;
+                padding: 10px !important;
+                font-size: 14px !important;
+            }
+
+            .menu-item i {
+                font-size: 20px !important;
+            }
+
+            .menu {
+                gap: 15px !important;
+            }
+
+            .menu::before,
+            .music-player::before,
+            #photoSectionUnique::before,
+            .notice-text::before {
+                width: 90%;
+            }
         }
 
         .secret-notif {
@@ -364,7 +460,7 @@
             padding: 15px 25px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 1000; /* Di bawah hover-popup */
             font-size: 14px;
             text-align: center;
             max-width: 300px;
@@ -395,6 +491,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 15; /* Di atas main-content tapi di bawah menu */
         }
 
         .menu-content.active {
@@ -427,7 +524,7 @@
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 1100; /* Di bawah hover-popup tapi di atas secret-notif */
             text-align: center;
             animation: shake 0.5s ease-in-out;
             width: 200px;
@@ -466,6 +563,8 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 25; /* Di atas menu-content tapi di bawah menu-item */
         }
 
         .readme-letter-text,
@@ -487,7 +586,7 @@
             padding: 15px;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            z-index: 1200; /* Di bawah hover-popup tapi di atas popup biasa */
             width: 90%;
             max-width: 250px;
         }
@@ -572,6 +671,7 @@
             text-align: right;
             color: #ff3e7f;
             font-size: 14px;
+            margin: 0;
         }
 
         .response-section {
@@ -616,6 +716,7 @@
             transform: translateY(-50%);
             display: flex;
             gap: 10px;
+            z-index: 50; /* Di atas letter-container tapi di bawah hover-popup */
         }
 
         .music-icon,
@@ -648,7 +749,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             display: none;
-            z-index: 2000;
+            z-index: 1300; /* Di bawah loading-love tapi di atas password-popup */
             background: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
@@ -846,7 +947,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 1400; /* Di atas semua kecuali hover-popup */
         }
 
         .loading-love.hidden {
@@ -1070,32 +1171,51 @@
             background: #ff3e7f;
         }
 
-        .signature {
-            margin: 0;
-        }
-        .pin-container {
-    display: none; /* Sembunyikan pin-container sampai kode akses divalidasi */
-}
-
-/* Animasi glow untuk @sidorsz */
-@keyframes glow {
+        /* Animasi glow untuk @sidorsz */
+        @keyframes glow {
             0% { text-shadow: 0 0 5px #ff6f91, 0 0 10px #ff6f91; }
             50% { text-shadow: 0 0 10px #ff3e7f, 0 0 20px #ff3e7f, 0 0 30px #ff3e7f; }
             100% { text-shadow: 0 0 5px #ff6f91, 0 0 10px #ff6f91; }
         }
 
-        
         img {
-    border: none !important;
-    background: transparent !important;
-}
-/* Pastikan GIF terus berjalan */
-#sidorszLink img {
             border: none !important;
             background: transparent !important;
-            animation: none !important; /* Tidak ada animasi CSS tambahan yang mengganggu */
         }
-    </style>
+
+        #sidorszLink img {
+            border: none !important;
+            background: transparent !important;
+            animation: none !important;
+        }
+
+        button {
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+            cursor: url('http://www.rw-designer.com/cursor-view/130446.png'), pointer;
+        }
+
+        #submitAccessCode:hover {
+            background: #ff3e7f;
+        }
+
+        #generateCodeBtn:hover {
+            background: #ff1e60;
+        }
+
+        #getFreeBtn:hover {
+            background: #ffb300;
+            color: white;
+        }
+
+        #downloadTemplateBtn:hover {
+            background: #388E3C;
+        }
+</style>
 
     <!-- Service Worker Registration -->
     <script>
@@ -1110,6 +1230,7 @@
                 });
         });
     }
+    
 
     
     </script>
@@ -1198,6 +1319,7 @@
                 <img src="photocont/f4.png" alt="Photo 4" id="galleryPhoto8" loading="lazy">
             </div>
         </div>
+        
 
         <!-- Music Player -->
         <div class="music-player">
@@ -1517,116 +1639,123 @@
 
         
 
-      // Access Code Authentication
-const accessCodeContainer = document.getElementById('access-code-container');
-const accessCodeInput = document.getElementById('accessCodeInput');
-const submitAccessCode = document.getElementById('submitAccessCode');
-const generateCodeBtn = document.getElementById('generateCodeBtn');
-const getFreeBtn = document.getElementById('getFreeBtn');
-const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
-const accessCodeMessage = document.getElementById('accessCodeMessage');
-const accessErrorPopup = document.getElementById('accessErrorPopup');
-const downloadErrorPopup = document.getElementById('downloadErrorPopup');
-const copySuccessPopup = document.getElementById('copySuccessPopup'); // Tambah elemen baru
-const pinContainer = document.querySelector('.pin-container');
-const sidorszLink = document.getElementById('sidorszLink');
-const sidorszPopup = document.getElementById('sidorszPopup');
+     // Access Code Authentication
+// Bagian ini mengelola autentikasi kode akses untuk mengakses fitur aplikasi
+const accessCodeContainer = document.getElementById('access-code-container'); // Kontainer utama untuk form kode akses
+const accessCodeInput = document.getElementById('accessCodeInput'); // Input untuk memasukkan kode akses
+const submitAccessCode = document.getElementById('submitAccessCode'); // Tombol untuk mengirimkan kode yang dimasukkan
+const generateCodeBtn = document.getElementById('generateCodeBtn'); // Tombol untuk menghasilkan kode akses baru
+const getFreeBtn = document.getElementById('getFreeBtn'); // Tombol "Get Free" yang bergerak saat diklik
+const downloadTemplateBtn = document.getElementById('downloadTemplateBtn'); // Tombol untuk mengunduh template
+const accessCodeMessage = document.getElementById('accessCodeMessage'); // Elemen untuk menampilkan pesan status kode
+const accessErrorPopup = document.getElementById('accessErrorPopup'); // Popup yang muncul saat kode salah
+const downloadErrorPopup = document.getElementById('downloadErrorPopup'); // Popup untuk kesalahan kata sandi unduhan
+const copySuccessPopup = document.getElementById('copySuccessPopup'); // Popup sukses saat kode disalin ke clipboard
+const pinContainer = document.querySelector('.pin-container'); // Kontainer untuk input PIN setelah kode valid
+const sidorszLink = document.getElementById('sidorszLink'); // Tautan ke kontak eksternal (misalnya WhatsApp)
+const sidorszPopup = document.getElementById('sidorszPopup'); // Popup informasi kontak eksternal
 
-const PREMIUM_CODE = 'DORZ-PREMIUM'; // Kode premium
-const DOWNLOAD_PASSWORD = 'SIDORSZ'; // Password untuk download
-const TEMPLATE_URL = 'https://drive.google.com/uc?export=download&id=1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe'; // URL unduhan langsung (diperbaiki)
+// Konstanta untuk autentikasi
+const PREMIUM_CODE = 'DORZ-PREMIUM'; // Kode premium tetap untuk akses tanpa batas
+const DOWNLOAD_PASSWORD = 'SIDORSZ'; // Kata sandi tetap untuk mengunduh template
+const TEMPLATE_URL = 'https://drive.google.com/uc?export=download&id=1v_WmQEy0Gz6U8wrM-QjffxVrfhr0uWbe'; // URL langsung untuk mengunduh template dari Google Drive
 
+// Fungsi untuk mengambil jumlah generate kode dari localStorage
 function getGenerateCount() {
-    return parseInt(localStorage.getItem('generateCount') || '0');
+    return parseInt(localStorage.getItem('generateCount') || '0'); // Default ke 0 jika belum ada
 }
 
+// Fungsi untuk menambah jumlah generate kode dan menyimpannya
 function incrementGenerateCount() {
     const count = getGenerateCount() + 1;
     localStorage.setItem('generateCount', count.toString());
-    return count;
+    return count; // Mengembalikan jumlah terbaru
 }
 
+// Fungsi untuk menghasilkan kode acak dengan panjang tertentu
 function generateRandomCode(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'; // Karakter yang digunakan untuk kode
     let result = '';
     for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
+        result += characters.charAt(Math.floor(Math.random() * characters.length)); // Pilih karakter acak
     }
     return result;
 }
 
+// Fungsi untuk menyalin teks ke clipboard
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        copySuccessPopup.style.display = 'block';
-        setTimeout(() => copySuccessPopup.style.display = 'none', 1500);
+    navigator.clipboard.writeText(text).then(() => { // Menggunakan API clipboard browser
+        copySuccessPopup.style.display = 'block'; // Tampilkan popup sukses
+        setTimeout(() => copySuccessPopup.style.display = 'none', 1500); // Sembunyikan setelah 1.5 detik
         console.log("Kode berhasil disalin:", text);
     }).catch(err => {
-        console.error("Gagal menyalin kode:", err);
+        console.error("Gagal menyalin kode:", err); // Log error jika gagal
     });
 }
 
+// Fungsi untuk menghasilkan kode akses baru
 function generateCode() {
     let generateCount = getGenerateCount();
     
-    if (generateCount < 10) {
-        const code = generateRandomCode(12);
+    if (generateCount < 10) { // Batas maksimum 10 kali generate
+        const code = generateRandomCode(12); // Generate kode 12 karakter
         const expiry = new Date();
-        expiry.setHours(expiry.getHours() + 12);
+        expiry.setHours(expiry.getHours() + 12); // Kode berlaku selama 12 jam
         
         const codeData = {
             code: code,
-            expiry: expiry.getTime()
+            expiry: expiry.getTime() // Simpan waktu kedaluwarsa dalam milidetik
         };
         
-        localStorage.setItem('accessData', JSON.stringify(codeData));
+        localStorage.setItem('accessData', JSON.stringify(codeData)); // Simpan ke localStorage
         
         accessCodeMessage.innerHTML = `
             Kode: <span id="generatedCode">${code}</span> 
             <span id="copyIcon" style="cursor: pointer; margin-left: 5px;" title="Salin kode">📋</span><br>
             Berlaku sampai: ${expiry.toLocaleString()}<br>
             Percobaan tersisa: ${10 - generateCount - 1}
-        `;
-        accessCodeInput.value = '';
+        `; // Tampilkan kode, waktu kedaluwarsa, dan sisa percobaan
+        accessCodeInput.value = ''; // Kosongkan input
         console.log("Kode Akses Tersimpan:", codeData);
         
-        // Tambahkan event listener untuk ikon copy setelah elemen dibuat
         const copyIcon = document.getElementById('copyIcon');
-        copyIcon.addEventListener('click', () => copyToClipboard(code));
+        copyIcon.addEventListener('click', () => copyToClipboard(code)); // Tambah fungsi salin saat ikon diklik
         
-        incrementGenerateCount();
+        incrementGenerateCount(); // Tambah jumlah generate
     } else {
         accessCodeMessage.innerHTML = `
             <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
-        `;
-        generateCodeBtn.disabled = true;
-        generateCodeBtn.style.background = '#ccc';
-        generateCodeBtn.style.cursor = 'not-allowed';
+        `; // Pesan saat batas tercapai
+        generateCodeBtn.disabled = true; // Nonaktifkan tombol generate
+        generateCodeBtn.style.background = '#ccc'; // Ubah warna tombol
+        generateCodeBtn.style.cursor = 'not-allowed'; // Ubah kursor
         
         setTimeout(() => {
-            sidorszPopup.style.display = 'block';
+            sidorszPopup.style.display = 'block'; // Tampilkan popup kontak
             setTimeout(() => {
-                sidorszPopup.style.display = 'none';
-                window.open(sidorszLink.href, '_blank');
+                sidorszPopup.style.display = 'none'; // Sembunyikan setelah 2 detik
+                window.open(sidorszLink.href, '_blank'); // Buka tautan kontak
             }, 2000);
         }, 1000);
     }
 }
 
+// Fungsi untuk memvalidasi kode yang dimasukkan pengguna
 function validateAccessCode() {
-    const enteredCode = accessCodeInput.value.trim();
-    const storedData = localStorage.getItem('accessData');
+    const enteredCode = accessCodeInput.value.trim(); // Ambil kode yang dimasukkan
+    const storedData = localStorage.getItem('accessData'); // Ambil data kode dari localStorage
     
     console.log("Input pengguna:", enteredCode);
     
-    if (enteredCode === PREMIUM_CODE) {
-        accessCodeContainer.style.display = 'none';
-        pinContainer.style.display = 'block';
-        accessCodeMessage.textContent = '';
+    if (enteredCode === PREMIUM_CODE) { // Jika kode premium dimasukkan
+        accessCodeContainer.style.display = 'none'; // Sembunyikan kontainer kode
+        pinContainer.style.display = 'block'; // Tampilkan kontainer PIN
+        accessCodeMessage.textContent = ''; // Kosongkan pesan
         console.log("Kode premium DORZ-PREMIUM digunakan, akses tanpa batas diberikan");
         return;
     }
     
-    if (storedData) {
+    if (storedData) { // Jika ada data kode tersimpan
         const { code, expiry } = JSON.parse(storedData);
         const currentTime = new Date().getTime();
 
@@ -1634,17 +1763,17 @@ function validateAccessCode() {
         console.log("Waktu saat ini:", currentTime);
         console.log("Waktu kedaluwarsa:", expiry);
 
-        if (enteredCode === code && currentTime < expiry) {
+        if (enteredCode === code && currentTime < expiry) { // Jika kode cocok dan belum kedaluwarsa
             accessCodeContainer.style.display = 'none';
             pinContainer.style.display = 'block';
             accessCodeMessage.textContent = '';
-            localStorage.removeItem('accessData');
+            localStorage.removeItem('accessData'); // Hapus kode setelah digunakan
             console.log("Kode valid, melanjutkan ke pin-container");
-            checkExpiry(expiry);
+            checkExpiry(expiry); // Mulai pemeriksaan kedaluwarsa
         } else {
-            accessErrorPopup.style.display = 'block';
-            setTimeout(() => accessErrorPopup.style.display = 'none', 2000);
-            accessCodeInput.value = '';
+            accessErrorPopup.style.display = 'block'; // Tampilkan popup error
+            setTimeout(() => accessErrorPopup.style.display = 'none', 2000); // Sembunyikan setelah 2 detik
+            accessCodeInput.value = ''; // Kosongkan input
             console.log("Kode salah atau kedaluwarsa");
         }
     } else {
@@ -1655,21 +1784,22 @@ function validateAccessCode() {
     }
 }
 
+// Fungsi untuk memeriksa waktu kedaluwarsa kode
 function checkExpiry(expiryTime) {
-    const checkInterval = setInterval(() => {
+    const checkInterval = setInterval(() => { // Periksa setiap detik
         const currentTime = new Date().getTime();
-        if (currentTime >= expiryTime) {
-            clearInterval(checkInterval);
+        if (currentTime >= expiryTime) { // Jika waktu habis
+            clearInterval(checkInterval); // Hentikan interval
             console.log("Waktu akses habis, mengeluarkan pengguna");
             
-            pinContainer.style.display = 'none';
-            accessCodeContainer.style.display = 'flex';
+            pinContainer.style.display = 'none'; // Sembunyikan kontainer PIN
+            accessCodeContainer.style.display = 'flex'; // Tampilkan kontainer kode
             accessCodeMessage.innerHTML = `
                 <p style="color: #ff3e7f;">Waktu akses Anda telah habis! Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses baru.</p>
             `;
-            generateCodeBtn.disabled = true;
-            submitAccessCode.disabled = true;
-            accessCodeInput.disabled = true;
+            generateCodeBtn.disabled = true; // Nonaktifkan tombol generate
+            submitAccessCode.disabled = true; // Nonaktifkan tombol submit
+            accessCodeInput.disabled = true; // Nonaktifkan input
             
             setTimeout(() => {
                 sidorszPopup.style.display = 'block';
@@ -1683,72 +1813,76 @@ function checkExpiry(expiryTime) {
 }
 
 // Logika untuk tombol Get Free
+// Fungsi untuk memindahkan tombol ke posisi acak
 function moveButton() {
-    getFreeBtn.style.position = 'absolute';
+    getFreeBtn.style.position = 'absolute'; // Ubah posisi menjadi absolut
     
     const container = document.getElementById('access-code-container');
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
-    const btnWidth = getFreeBtn.offsetWidth;
-    const btnHeight = getFreeBtn.offsetHeight;
+    const containerWidth = container.clientWidth; // Lebar kontainer
+    const containerHeight = container.clientHeight; // Tinggi kontainer
+    const btnWidth = getFreeBtn.offsetWidth; // Lebar tombol
+    const btnHeight = getFreeBtn.offsetHeight; // Tinggi tombol
 
-    const maxX = containerWidth - btnWidth;
-    const maxY = containerHeight - btnHeight;
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
+    const maxX = containerWidth - btnWidth; // Batas maksimum X
+    const maxY = containerHeight - btnHeight; // Batas maksimum Y
+    const randomX = Math.floor(Math.random() * maxX); // Posisi X acak
+    const randomY = Math.floor(Math.random() * maxY); // Posisi Y acak
 
-    getFreeBtn.style.left = `${randomX}px`;
-    getFreeBtn.style.top = `${randomY}px`;
+    getFreeBtn.style.left = `${randomX}px`; // Set posisi X
+    getFreeBtn.style.top = `${randomY}px`; // Set posisi Y
 }
 
+// Fungsi untuk mengembalikan posisi tombol ke default
 function resetButtonPosition() {
-    getFreeBtn.style.position = 'static';
+    getFreeBtn.style.position = 'static'; // Kembalikan ke posisi statis
     getFreeBtn.style.left = 'auto';
     getFreeBtn.style.top = 'auto';
     getFreeBtn.style.transform = 'none';
 }
 
 // Logika untuk tombol Download Template
+// Fungsi untuk mengunduh template dengan kata sandi
 function downloadTemplate() {
-    const enteredPassword = prompt("Masukkan password untuk mendownload template:");
-    if (enteredPassword === DOWNLOAD_PASSWORD) {
-        const link = document.createElement('a');
+    const enteredPassword = prompt("Masukkan password untuk mendownload template:"); // Minta kata sandi
+    if (enteredPassword === DOWNLOAD_PASSWORD) { // Jika kata sandi benar
+        const link = document.createElement('a'); // Buat elemen tautan
         link.href = TEMPLATE_URL;
         link.download = ''; // Nama file diambil dari server
         document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        link.click(); // Klik tautan untuk unduh
+        document.body.removeChild(link); // Hapus elemen setelah digunakan
     } else {
-        downloadErrorPopup.style.display = 'block';
-        setTimeout(() => downloadErrorPopup.style.display = 'none', 2000);
+        downloadErrorPopup.style.display = 'block'; // Tampilkan popup error
+        setTimeout(() => downloadErrorPopup.style.display = 'none', 2000); // Sembunyikan setelah 2 detik
     }
 }
 
-// Event Listeners
-generateCodeBtn.addEventListener('click', generateCode);
-submitAccessCode.addEventListener('click', validateAccessCode);
-accessCodeInput.addEventListener('keypress', (e) => {
+// Event Listeners untuk interaksi pengguna
+generateCodeBtn.addEventListener('click', generateCode); // Klik tombol generate kode
+submitAccessCode.addEventListener('click', validateAccessCode); // Klik tombol submit kode
+accessCodeInput.addEventListener('keypress', (e) => { // Tekan Enter di input kode
     if (e.key === 'Enter') validateAccessCode();
 });
-getFreeBtn.addEventListener('click', moveButton);
-downloadTemplateBtn.addEventListener('click', downloadTemplate);
+getFreeBtn.addEventListener('click', moveButton); // Klik tombol "Get Free"
+downloadTemplateBtn.addEventListener('click', downloadTemplate); // Klik tombol unduh template
 
+// Inisialisasi saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
-    const storedData = localStorage.getItem('accessData');
+    const storedData = localStorage.getItem('accessData'); // Periksa kode tersimpan
     if (storedData) {
         const { expiry } = JSON.parse(storedData);
         const currentTime = new Date().getTime();
-        if (currentTime > expiry) {
+        if (currentTime > expiry) { // Jika kode sudah kedaluwarsa
             localStorage.removeItem('accessData');
-        } else if (pinContainer.style.display === 'block') {
+        } else if (pinContainer.style.display === 'block') { // Jika PIN aktif
             checkExpiry(expiry);
         }
     }
     
     const generateCount = getGenerateCount();
-    if (generateCount < 10) {
+    if (generateCount < 10) { // Jika masih ada percobaan generate
         accessCodeMessage.innerHTML = `Percobaan generate tersisa: ${10 - generateCount}`;
-    } else {
+    } else { // Jika batas generate habis
         accessCodeMessage.innerHTML = `
             <p style="color: #ff3e7f;">Batas generate kode habis (maksimum 10 kali). Gunakan kode premium <strong>${PREMIUM_CODE}</strong> atau hubungi <a href="https://wa.me/c/6287773573474" style="color: #ff6f91; text-decoration: none;">@sidorsz</a> untuk akses lebih lanjut!</p>
         `;
@@ -1757,731 +1891,818 @@ document.addEventListener('DOMContentLoaded', () => {
         generateCodeBtn.style.cursor = 'not-allowed';
     }
 
-    resetButtonPosition();
+    resetButtonPosition(); // Atur ulang posisi tombol "Get Free"
 });
 
+// Event untuk tautan kontak eksternal
 sidorszLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    sidorszPopup.style.display = 'block';
+    e.preventDefault(); // Cegah perilaku default tautan
+    sidorszPopup.style.display = 'block'; // Tampilkan popup
     
     setTimeout(() => {
-        sidorszPopup.style.display = 'none';
-        window.open(sidorszLink.href, '_blank');
+        sidorszPopup.style.display = 'none'; // Sembunyikan setelah 2 detik
+        window.open(sidorszLink.href, '_blank'); // Buka tautan di tab baru
     }, 2000);
 });
-        // Tunggu hingga library html2pdf dimuat
-        window.addEventListener("load", function () {
-            if (typeof html2pdf === "undefined") {
-                console.error("html2pdf.js gagal dimuat. Periksa CDN atau koneksi internet.");
-                alert("Gagal memuat library untuk membuat PDF. Pastikan koneksi internet aktif.");
-                return;
-            }
 
-            let isGeneratingPDF = false;
+// PDF Generation
+// Tunggu hingga library html2pdf dimuat
+window.addEventListener("load", function () {
+    if (typeof html2pdf === "undefined") { // Periksa apakah library html2pdf tersedia
+        console.error("html2pdf.js gagal dimuat. Periksa CDN atau koneksi internet.");
+        alert("Gagal memuat library untuk membuat PDF. Pastikan koneksi internet aktif.");
+        return;
+    }
 
-            document.getElementById("downloadPdfBtn").addEventListener("click", function () {
-                if (isGeneratingPDF) {
-                    console.log("Proses pembuatan PDF sedang berjalan. Silakan tunggu...");
-                    return;
+    let isGeneratingPDF = false; // Variabel untuk mencegah generate PDF ganda
+
+    // Event untuk tombol unduh PDF
+    document.getElementById("downloadPdfBtn").addEventListener("click", function () {
+        if (isGeneratingPDF) { // Jika sedang generate PDF
+            console.log("Proses pembuatan PDF sedang berjalan. Silakan tunggu...");
+            return;
+        }
+
+        isGeneratingPDF = true;
+
+        const originalElement = document.querySelector("#mainMenu .menu-content-inner"); // Elemen yang akan dijadikan PDF
+        if (!originalElement) { // Jika elemen tidak ditemukan
+            console.error("Elemen #mainMenu .menu-content-inner tidak ditemukan.");
+            alert("Konten tidak ditemukan! Pastikan elemen #mainMenu .menu-content-inner ada di halaman.");
+            isGeneratingPDF = false;
+            return;
+        }
+        console.log("Elemen utama ditemukan:", originalElement);
+
+        const clonedElement = originalElement.cloneNode(true); // Kloning elemen untuk dimodifikasi
+        clonedElement.style.position = "absolute";
+        clonedElement.style.left = "-9999px"; // Sembunyikan dari layar
+        clonedElement.style.width = "210mm"; // Sesuaikan dengan ukuran A4
+        clonedElement.style.height = "auto";
+        clonedElement.style.visibility = "visible";
+        clonedElement.style.display = "block";
+        clonedElement.style.transform = "none";
+        clonedElement.style.opacity = "1";
+        clonedElement.style.zIndex = "9999";
+        document.body.appendChild(clonedElement); // Tambahkan ke DOM
+
+        const images = clonedElement.getElementsByTagName("img"); // Ambil semua gambar
+        let loadedImages = 0;
+        const totalImages = images.length;
+
+        if (totalImages === 0) { // Jika tidak ada gambar
+            generatePDF(clonedElement);
+        } else {
+            for (let img of images) {
+                if (!img.src.includes(window.location.hostname)) { // Abaikan gambar eksternal
+                    img.src = "";
+                    console.warn("Gambar eksternal diabaikan:", img.src);
                 }
 
-                isGeneratingPDF = true;
-
-                const originalElement = document.querySelector("#mainMenu .menu-content-inner");
-                if (!originalElement) {
-                    console.error("Elemen #mainMenu .menu-content-inner tidak ditemukan.");
-                    alert("Konten tidak ditemukan! Pastikan elemen #mainMenu .menu-content-inner ada di halaman.");
-                    isGeneratingPDF = false;
-                    return;
-                }
-                console.log("Elemen utama ditemukan:", originalElement);
-
-                const clonedElement = originalElement.cloneNode(true);
-                clonedElement.style.position = "absolute";
-                clonedElement.style.left = "-9999px";
-                clonedElement.style.width = "210mm";
-                clonedElement.style.height = "auto";
-                clonedElement.style.visibility = "visible";
-                clonedElement.style.display = "block";
-                clonedElement.style.transform = "none";
-                clonedElement.style.opacity = "1";
-                clonedElement.style.zIndex = "9999";
-                document.body.appendChild(clonedElement);
-
-                const images = clonedElement.getElementsByTagName("img");
-                let loadedImages = 0;
-                const totalImages = images.length;
-
-                if (totalImages === 0) {
-                    generatePDF(clonedElement);
-                } else {
-                    for (let img of images) {
-                        if (!img.src.includes(window.location.hostname)) {
-                            img.src = "";
-                            console.warn("Gambar eksternal diabaikan:", img.src);
-                        }
-
-                        img.onload = () => {
-                            loadedImages++;
-                            if (loadedImages === totalImages) {
-                                generatePDF(clonedElement);
-                            }
-                        };
-
-                        img.onerror = () => {
-                            console.warn("Gambar gagal dimuat:", img.src);
-                            loadedImages++;
-                            if (loadedImages === totalImages) {
-                                generatePDF(clonedElement);
-                            }
-                        };
-
-                        if (img.complete) {
-                            img.onload();
-                        }
+                img.onload = () => { // Ketika gambar selesai dimuat
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        generatePDF(clonedElement);
                     }
-                }
-            });
-
-            function generatePDF(element) {
-                const options = {
-                    margin: [10, 10, 10, 10],
-                    filename: "Ungkapan_Hati_Anonymous.pdf",
-                    image: { type: "jpeg", quality: 1 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        logging: true,
-                        onclone: (clonedDoc) => {
-                            clonedDoc.querySelector(".menu-content-inner").style.display = "block";
-                            clonedDoc.querySelectorAll('img').forEach(img => {
-                                img.style.display = "block";
-                                img.style.visibility = "visible";
-                            });
-                        }
-                    },
-                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
                 };
 
-                html2pdf()
-                    .from(element)
-                    .set(options)
-                    .save()
-                    .then(() => {
-                        console.log("PDF berhasil dibuat.");
-                        alert("PDF berhasil diunduh!");
-                    })
-                    .catch((err) => {
-                        console.error("Gagal membuat PDF:", err);
-                        alert("Gagal membuat PDF. Silakan coba lagi atau periksa konsol untuk detailnya.");
-                    })
-                    .finally(() => {
-                        document.body.removeChild(element);
-                        isGeneratingPDF = false;
-                    });
-            }
-        });
-
-        // Background Music Handler
-        function initializeBackgroundMusic() {
-            const mainMenu = document.getElementById('mainMenu');
-            const backgroundMusic = document.getElementById('backgroundMusic');
-            const playMusicBtn = document.getElementById('playMusicBtn');
-            const playVideoBtn = document.getElementById('playVideoBtn');
-            const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-            const secretVideoPlayer = document.getElementById('secretVideoPlayer');
-            const secretVideo = document.getElementById('secretVideo');
-            const closeSecretVideoBtn = document.getElementById('closeSecretVideoBtn');
-
-            if (!mainMenu || !backgroundMusic || !playMusicBtn || !playVideoBtn || !downloadPdfBtn || !secretVideoPlayer || !secretVideo || !closeSecretVideoBtn) return;
-
-            backgroundMusic.volume = 0.3;
-            let hasPlayed = false;
-
-            const playMusic = () => {
-                if (!hasPlayed) {
-                    backgroundMusic.play().then(() => {
-                        hasPlayed = true;
-                        playMusicBtn.style.display = 'none';
-                    }).catch(() => {
-                        playMusicBtn.style.display = 'block';
-                    });
-                }
-            };
-
-            playMusicBtn.addEventListener('click', playMusic);
-
-            playVideoBtn.addEventListener('click', () => {
-                stopOtherMedia(secretVideo);
-                secretVideoPlayer.style.display = 'block';
-                secretVideo.play().catch(err => console.error("Error playing secret video:", err));
-            });
-
-            closeSecretVideoBtn.addEventListener('click', () => {
-                secretVideoPlayer.style.display = 'none';
-                secretVideo.pause();
-            });
-
-            downloadPdfBtn.addEventListener('click', () => {
-                const element = document.querySelector('#mainMenu .menu-content-inner');
-                const options = {
-                    margin: 1,
-                    filename: 'Ungkapan_Hati_Annonymus.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                img.onerror = () => { // Jika gambar gagal dimuat
+                    console.warn("Gambar gagal dimuat:", img.src);
+                    loadedImages++;
+                    if (loadedImages === totalImages) {
+                        generatePDF(clonedElement);
+                    }
                 };
-                html2pdf().from(element).set(options).save();
-            });
-        }
 
-        // Response Handler
-        function initializeResponseHandler() {
-            const responseInput = document.getElementById('responseInput');
-            const submitResponseBtn = document.getElementById('submitResponseBtn');
-            const responseDisplay = document.getElementById('responseDisplay');
-            const whatsappNumber = '6282164924290';
-
-            if (!responseInput || !submitResponseBtn || !responseDisplay) return;
-
-            submitResponseBtn.addEventListener('click', () => {
-                const responseText = responseInput.value.trim();
-                if (responseText !== '') {
-                    responseDisplay.textContent = 'Jawaban Anda berhasil dikirim';
-                    responseInput.value = '';
-                    const whatsappMessage = `Halo *Annonymus*... Jawaban dari Aku : ${responseText}`;
-                    const encodedMessage = encodeURIComponent(whatsappMessage);
-                    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-                    window.location.href = whatsappURL;
-                }
-            });
-        }
-
-        // General Script
-        const correctPin = "09042003";
-        let currentPosition = 0;
-        const photos = [
-            'imgPIN/p1.png',
-            'imgPIN/p2.png',
-            'imgPIN/p3.png',
-            'imgPIN/p4.png',
-            'imgPIN/p5.png',
-            'imgPIN/p6.png',
-            'imgPIN/p7.png',
-            'imgPIN/p8.png'
-        ];
-
-        const pinInput = document.getElementById('pinInput');
-        const photo = document.getElementById('photo');
-        const mainContent = document.getElementById('mainContent');
-        const numberButtons = document.querySelectorAll('.number-button');
-        const delButton = document.getElementById('delButton');
-        const noButton = document.getElementById('noButton');
-        const okButton = document.getElementById('okButton');
-        const funnyPopup = document.getElementById('customPopupId');
-        const loadingLove = document.getElementById('loadingLove');
-        const loadingText = document.getElementById('loadingText');
-        const clickSound = document.getElementById('clickSound');
-
-        function typeLoadingText() {
-            const text = "Loading Love...";
-            let index = 0;
-            loadingText.textContent = '';
-
-            function type() {
-                if (index < text.length) {
-                    loadingText.textContent += text[index];
-                    index++;
-                    setTimeout(type, 100);
-                } else {
-                    setTimeout(() => {
-                        loadingText.textContent = '';
-                        index = 0;
-                        type();
-                    }, 500);
+                if (img.complete) { // Jika gambar sudah dimuat sebelumnya
+                    img.onload();
                 }
             }
-            type();
         }
+    });
 
-        function initializePin() {
-            const cachedPin = localStorage.getItem('lastPin');
-            if (cachedPin) {
-                pinInput.value = cachedPin;
-                currentPosition = cachedPin.length - 1;
+    // Fungsi untuk menghasilkan PDF dari elemen
+    function generatePDF(element) {
+        const options = {
+            margin: [10, 10, 10, 10], // Margin PDF dalam mm
+            filename: "Ungkapan_Hati_Anonymous.pdf", // Nama file PDF
+            image: { type: "jpeg", quality: 1 }, // Kualitas gambar
+            html2canvas: {
+                scale: 2, // Skala render
+                useCORS: true, // Dukung gambar lintas domain
+                logging: true,
+                onclone: (clonedDoc) => { // Modifikasi dokumen kloning
+                    clonedDoc.querySelector(".menu-content-inner").style.display = "block";
+                    clonedDoc.querySelectorAll('img').forEach(img => {
+                        img.style.display = "block";
+                        img.style.visibility = "visible";
+                    });
+                }
+            },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } // Pengaturan jsPDF
+        };
+
+        html2pdf()
+            .from(element)
+            .set(options)
+            .save() // Simpan PDF
+            .then(() => {
+                console.log("PDF berhasil dibuat.");
+                alert("PDF berhasil diunduh!");
+            })
+            .catch((err) => {
+                console.error("Gagal membuat PDF:", err);
+                alert("Gagal membuat PDF. Silakan coba lagi atau periksa konsol untuk detailnya.");
+            })
+            .finally(() => {
+                document.body.removeChild(element); // Hapus elemen kloning
+                isGeneratingPDF = false;
+            });
+    }
+});
+
+// Background Music Handler
+// Fungsi untuk mengelola musik latar dan video rahasia
+function initializeBackgroundMusic() {
+    const mainMenu = document.getElementById('mainMenu'); // Elemen menu utama
+    const backgroundMusic = document.getElementById('backgroundMusic'); // Elemen audio musik latar
+    const playMusicBtn = document.getElementById('playMusicBtn'); // Tombol putar musik
+    const playVideoBtn = document.getElementById('playVideoBtn'); // Tombol putar video rahasia
+    const downloadPdfBtn = document.getElementById('downloadPdfBtn'); // Tombol unduh PDF (duplikat)
+    const secretVideoPlayer = document.getElementById('secretVideoPlayer'); // Kontainer video rahasia
+    const secretVideo = document.getElementById('secretVideo'); // Elemen video rahasia
+    const closeSecretVideoBtn = document.getElementById('closeSecretVideoBtn'); // Tombol tutup video
+
+    // Periksa apakah semua elemen tersedia
+    if (!mainMenu || !backgroundMusic || !playMusicBtn || !playVideoBtn || !downloadPdfBtn || !secretVideoPlayer || !secretVideo || !closeSecretVideoBtn) return;
+
+    backgroundMusic.volume = 0.3; // Atur volume musik latar
+    let hasPlayed = false; // Status apakah musik sudah diputar
+
+    const playMusic = () => { // Fungsi untuk memutar musik
+        if (!hasPlayed) {
+            backgroundMusic.play().then(() => {
+                hasPlayed = true;
+                playMusicBtn.style.display = 'none'; // Sembunyikan tombol setelah diputar
+            }).catch(() => {
+                playMusicBtn.style.display = 'block'; // Tampilkan tombol jika gagal
+            });
+        }
+    };
+
+    playMusicBtn.addEventListener('click', playMusic); // Event untuk tombol putar musik
+
+    playVideoBtn.addEventListener('click', () => { // Event untuk tombol putar video
+        stopOtherMedia(secretVideo); // Hentikan media lain
+        secretVideoPlayer.style.display = 'block'; // Tampilkan pemutar video
+        secretVideo.play().catch(err => console.error("Error playing secret video:", err)); // Putar video
+    });
+
+    closeSecretVideoBtn.addEventListener('click', () => { // Event untuk tombol tutup video
+        secretVideoPlayer.style.display = 'none'; // Sembunyikan pemutar
+        secretVideo.pause(); // Jeda video
+    });
+
+    downloadPdfBtn.addEventListener('click', () => { // Event untuk tombol unduh PDF (duplikat)
+        const element = document.querySelector('#mainMenu .menu-content-inner');
+        const options = {
+            margin: 1,
+            filename: 'Ungkapan_Hati_Annonymus.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(options).save(); // Generate dan simpan PDF
+    });
+}
+
+// Response Handler
+// Fungsi untuk mengelola pengiriman respons melalui WhatsApp
+function initializeResponseHandler() {
+    const responseInput = document.getElementById('responseInput'); // Input untuk respons pengguna
+    const submitResponseBtn = document.getElementById('submitResponseBtn'); // Tombol kirim respons
+    const responseDisplay = document.getElementById('responseDisplay'); // Elemen untuk menampilkan status respons
+    const whatsappNumber = '6282164924290'; // Nomor WhatsApp tujuan
+
+    if (!responseInput || !submitResponseBtn || !responseDisplay) return; // Periksa elemen
+
+    submitResponseBtn.addEventListener('click', () => { // Event untuk tombol kirim
+        const responseText = responseInput.value.trim();
+        if (responseText !== '') { // Jika input tidak kosong
+            responseDisplay.textContent = 'Jawaban Anda berhasil dikirim';
+            responseInput.value = ''; // Kosongkan input
+            const whatsappMessage = `Halo *Annonymus*... Jawaban dari Aku : ${responseText}`; // Pesan WhatsApp
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`; // URL WhatsApp
+            window.location.href = whatsappURL; // Buka WhatsApp
+        }
+    });
+}
+
+// General Script
+// Bagian ini mengelola logika PIN dan konten utama
+const correctPin = "09042003"; // PIN yang benar
+let currentPosition = 0; // Posisi saat ini dalam input PIN
+const photos = [ // Daftar gambar untuk input PIN
+    'imgPIN/p1.png',
+    'imgPIN/p2.png',
+    'imgPIN/p3.png',
+    'imgPIN/p4.png',
+    'imgPIN/p5.png',
+    'imgPIN/p6.png',
+    'imgPIN/p7.png',
+    'imgPIN/p8.png'
+];
+
+const pinInput = document.getElementById('pinInput'); // Input untuk PIN
+const photo = document.getElementById('photo'); // Elemen gambar yang berubah sesuai PIN
+const mainContent = document.getElementById('mainContent'); // Konten utama setelah PIN valid
+const numberButtons = document.querySelectorAll('.number-button'); // Tombol angka untuk PIN
+const delButton = document.getElementById('delButton'); // Tombol hapus digit PIN
+const noButton = document.getElementById('noButton'); // Tombol reset PIN
+const okButton = document.getElementById('okButton'); // Tombol validasi PIN
+const funnyPopup = document.getElementById('customPopupId'); // Popup lucu saat PIN salah
+const loadingLove = document.getElementById('loadingLove'); // Elemen animasi loading
+const loadingText = document.getElementById('loadingText'); // Teks animasi loading
+const clickSound = document.getElementById('clickSound'); // Suara klik tombol
+
+// Fungsi untuk mengetik teks loading secara berulang
+function typeLoadingText() {
+    const text = "Loading Love...";
+    let index = 0;
+    loadingText.textContent = '';
+
+    function type() {
+        if (index < text.length) {
+            loadingText.textContent += text[index];
+            index++;
+            setTimeout(type, 100); // Ketik setiap 100ms
+        } else {
+            setTimeout(() => {
+                loadingText.textContent = '';
+                index = 0;
+                type(); // Ulangi setelah 500ms
+            }, 500);
+        }
+    }
+    type();
+}
+
+// Fungsi untuk menginisialisasi logika input PIN
+function initializePin() {
+    const cachedPin = localStorage.getItem('lastPin'); // Ambil PIN tersimpan
+    if (cachedPin) {
+        pinInput.value = cachedPin;
+        currentPosition = cachedPin.length - 1;
+        if (currentPosition < photos.length) photo.src = photos[currentPosition]; // Set gambar
+    }
+
+    numberButtons.forEach(button => { // Event untuk tombol angka
+        button.addEventListener('click', () => {
+            if (pinInput.value.length < pinInput.maxLength) { // Jika belum penuh
+                pinInput.value += button.getAttribute('data-number');
+                currentPosition = pinInput.value.length - 1;
                 if (currentPosition < photos.length) photo.src = photos[currentPosition];
-            }
-
-            numberButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    if (pinInput.value.length < pinInput.maxLength) {
-                        pinInput.value += button.getAttribute('data-number');
-                        currentPosition = pinInput.value.length - 1;
-                        if (currentPosition < photos.length) photo.src = photos[currentPosition];
-                        localStorage.setItem('lastPin', pinInput.value);
-                        if (clickSound) {
-                            clickSound.currentTime = 0;
-                            clickSound.play().catch(err => console.error("Error playing click sound:", err));
-                        }
-                    }
-                });
-            });
-
-            delButton.addEventListener('click', () => {
-                pinInput.value = pinInput.value.slice(0, -1);
-                currentPosition = Math.max(0, currentPosition - 1);
-                photo.src = photos[currentPosition] || photos[0];
-                localStorage.setItem('lastPin', pinInput.value);
-            });
-
-            noButton.addEventListener('click', () => {
-                pinInput.value = '';
-                currentPosition = 0;
-                photo.src = photos[0];
-                localStorage.removeItem('lastPin');
-            });
-
-            okButton.addEventListener('click', () => {
-                if (pinInput.value === correctPin) {
-                    loadingLove.style.display = 'flex';
-                    document.querySelector('.pin-container').style.display = 'none';
-                    typeLoadingText();
-
-                    setTimeout(() => {
-                        loadingLove.classList.add('hidden');
-                        loadingLove.style.display = 'none';
-                        mainContent.classList.add('active');
-                        initializeMenu();
-                    }, 2000);
-                } else {
-                    okButton.classList.add('shake');
-                    setTimeout(() => okButton.classList.remove('shake'), 500);
-                    funnyPopup.style.display = 'block';
-                    setTimeout(() => funnyPopup.style.display = 'none', 2000);
-                }
-            });
-        }
-
-        function initializeMenu() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            const secretNotif = document.getElementById('secretNotif');
-            const confirmSecretBtn = document.getElementById('confirmSecretBtn');
-            const cancelSecretBtn = document.getElementById('cancelSecretBtn');
-            let selectedTarget = null;
-
-            menuItems.forEach(item => {
-                item.removeEventListener('click', handleMenuClick);
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const target = item.getAttribute('data-target');
-                    if (target === 'mainMenu') {
-                        secretNotif.style.display = 'block';
-                        selectedTarget = target;
-                    } else {
-                        handleMenuClick.call(item);
-                        closePasswordPopup();
-                        secretNotif.style.display = 'none';
-                    }
-                });
-            });
-
-            confirmSecretBtn.addEventListener('click', () => {
-                secretNotif.style.display = 'none';
-                if (selectedTarget === 'mainMenu') {
-                    showPasswordPopup();
-                }
-            });
-
-            cancelSecretBtn.addEventListener('click', () => {
-                secretNotif.style.display = 'none';
-                selectedTarget = null;
-            });
-        }
-
-        function handleMenuClick() {
-            const target = this.getAttribute('data-target');
-            document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active'));
-            const targetSection = document.getElementById(target);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                if (target === 'readmeSection') {
-                    startTypingEffect();
-                } else if (target === 'gallerySection') {
-                    initializeGallery();
-                    setTimeout(() => targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    }), 100);
+                localStorage.setItem('lastPin', pinInput.value); // Simpan PIN
+                if (clickSound) {
+                    clickSound.currentTime = 0;
+                    clickSound.play().catch(err => console.error("Error playing click sound:", err)); // Putar suara
                 }
             }
-        }
-
-        function startTypingEffect() {
-            const lines = document.querySelectorAll('.readme-letter-text');
-            lines.forEach(line => line.textContent = '');
-            let currentLine = 0,
-                currentChar = 0,
-                timeoutIds = [];
-
-            function stopTyping() {
-                timeoutIds.forEach(id => clearTimeout(id));
-                timeoutIds = [];
-            }
-            stopTyping();
-
-            function typeLine() {
-                if (currentLine < lines.length) {
-                    const line = lines[currentLine];
-                    const text = line.getAttribute('id') === 'readme-line5' || line.getAttribute('id') === 'readme-line9' ? ' ' :
-                        line.getAttribute('id').replace('readme-line', '') === '1' ? 'Kepada Ryrea,' :
-                        line.getAttribute('id').replace('readme-line', '') === '2' ? 'Sebelum ada orang lain yang hadir dalam hidupmu, aku sudah diam-diam tertarik padamu karena kamu beda dengan wanita yang pernah saya temui.' :
-                        line.getAttribute('id').replace('readme-line', '') === '3' ? 'Aku menyimpan perasaan ini dalam hati, tapi rasa takut membuatku ragu untuk mengungkapkannya.' :
-                        line.getAttribute('id').replace('readme-line', '') === '4' ? 'Hingga saat ini, aku hanya bisa mencintaimu dari jauh, mengingat setiap momen kecil yang pernah saya rasakan bersamamu walaupun singkat itu sangat berarti bagiku.' :
-                        line.getAttribute('id').replace('readme-line', '') === '6' ? 'Aku akan terus menyayangimu dengan tulus, tanpa mengharapkan balasan, bahkan di tengah kesunyianku sendiri.' :
-                        line.getAttribute('id').replace('readme-line', '') === '7' ? 'Perasaan ini adalah harapan yang kupegang erat, dan aku tak ingin mengganggu kebahagiaanmu saat ini.' :
-                        line.getAttribute('id').replace('readme-line', '') === '8' ? 'Hubunganmu yang ada adalah pilihanmu, dan aku hanya ingin menjadi seseorang yang menjaga perasaan ini dalam diam, tanpa mengubah apa pun.' :
-                        line.getAttribute('id').replace('readme-line', '') === '10' ? 'Dengan hati yang tulus, aku harap kamu tahu bahwa kehadiranmu selalu punya tempat di pikiranku.' :
-                        'Teruslah menjadi dirimu sendiri, Ryrea, karena perasaan ini akan tetap ada, meski tak pernah diucapkan.';
-
-                    if (currentChar === 0) line.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                    if (currentChar < text.length) {
-                        line.textContent += text[currentChar];
-                        currentChar++;
-                        timeoutIds.push(setTimeout(typeLine, 50));
-                    } else {
-                        currentChar = 0;
-                        currentLine++;
-                        timeoutIds.push(setTimeout(typeLine, 500));
-                    }
-                }
-            }
-            typeLine();
-        }
-
-        const passwordPopup = document.getElementById('passwordPopup');
-        const passwordInput = document.getElementById('passwordInput');
-        const mainMenu = document.getElementById('mainMenu');
-        const errorPopup = document.getElementById('errorPopup');
-
-        function showPasswordPopup() {
-            passwordPopup.style.display = 'block';
-            passwordInput.focus();
-        }
-
-        function checkPassword() {
-            const password = passwordInput.value.trim();
-            if (password === "love") {
-                document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active'));
-                mainMenu.classList.add('active');
-                closePasswordPopup();
-                passwordInput.value = '';
-                setTimeout(() => mainMenu.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                }), 100);
-                initializeBackgroundMusic();
-            } else {
-                showErrorPopup();
-                passwordInput.value = '';
-            }
-        }
-
-        function closePasswordPopup() {
-            passwordPopup.style.display = 'none';
-        }
-
-        function showErrorPopup() {
-            errorPopup.style.display = 'block';
-            setTimeout(closeErrorPopup, 2500);
-        }
-
-        function closeErrorPopup() {
-            errorPopup.style.display = 'none';
-            passwordPopup.style.display = 'block';
-            passwordInput.focus();
-        }
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkPassword();
         });
+    });
 
-        const audio = document.getElementById('audio');
-        const playPauseButton = document.getElementById('playPauseButton');
-        const playPauseIcon = document.getElementById('playPauseIcon');
-        const rewindButton = document.getElementById('rewindButton');
-        const forwardButton = document.getElementById('forwardButton');
-        const progress = document.getElementById('progress');
-        const currentTimeDisplay = document.getElementById('currentTime');
-        const durationDisplay = document.getElementById('duration');
-        const backgroundVideo = document.getElementById('backgroundVideo');
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const galleryVideo = document.getElementById('galleryVideo');
-        const galleryVideoSource = document.getElementById('galleryVideoSource');
-        const secretVideo = document.getElementById('secretVideo');
+    delButton.addEventListener('click', () => { // Event untuk tombol hapus
+        pinInput.value = pinInput.value.slice(0, -1);
+        currentPosition = Math.max(0, currentPosition - 1);
+        photo.src = photos[currentPosition] || photos[0];
+        localStorage.setItem('lastPin', pinInput.value);
+    });
 
-        if (audio) audio.volume = 0.5;
-        if (backgroundVideo) {
-            backgroundVideo.muted = true;
-            backgroundVideo.loop = true;
-            backgroundVideo.preload = 'auto';
+    noButton.addEventListener('click', () => { // Event untuk tombol reset
+        pinInput.value = '';
+        currentPosition = 0;
+        photo.src = photos[0];
+        localStorage.removeItem('lastPin');
+    });
+
+    okButton.addEventListener('click', () => { // Event untuk tombol OK
+        if (pinInput.value === correctPin) { // Jika PIN benar
+            loadingLove.style.display = 'flex'; // Tampilkan animasi loading
+            document.querySelector('.pin-container').style.display = 'none';
+            typeLoadingText();
+
+            setTimeout(() => {
+                loadingLove.classList.add('hidden');
+                loadingLove.style.display = 'none';
+                mainContent.classList.add('active'); // Tampilkan konten utama
+                initializeMenu(); // Inisialisasi menu
+            }, 2000);
+        } else { // Jika PIN salah
+            okButton.classList.add('shake'); // Efek getar
+            setTimeout(() => okButton.classList.remove('shake'), 500);
+            funnyPopup.style.display = 'block'; // Tampilkan popup lucu
+            setTimeout(() => funnyPopup.style.display = 'none', 2000);
         }
-        if (backgroundMusic) backgroundMusic.volume = 0.3;
-        if (clickSound) clickSound.volume = 0.5;
-        if (secretVideo) secretVideo.volume = 1.0;
+    });
+}
 
-        function updatePlayPauseIcon(isPlaying) {
-            if (playPauseIcon) {
-                playPauseIcon.src = isPlaying ? 'https://cdn-icons-png.flaticon.com/512/107/107733.png' : 'https://cdn-icons-png.flaticon.com/512/0/375.png';
+// Fungsi untuk menginisialisasi menu interaktif
+function initializeMenu() {
+    const menuItems = document.querySelectorAll('.menu-item'); // Daftar item menu
+    const secretNotif = document.getElementById('secretNotif'); // Notifikasi rahasia
+    const confirmSecretBtn = document.getElementById('confirmSecretBtn'); // Tombol konfirmasi rahasia
+    const cancelSecretBtn = document.getElementById('cancelSecretBtn'); // Tombol batal rahasia
+    let selectedTarget = null; // Target menu yang dipilih
+
+    menuItems.forEach(item => { // Event untuk setiap item menu
+        item.removeEventListener('click', handleMenuClick); // Hapus listener lama
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = item.getAttribute('data-target');
+            if (target === 'mainMenu') { // Jika target adalah mainMenu
+                secretNotif.style.display = 'block';
+                selectedTarget = target;
+            } else {
+                handleMenuClick.call(item); // Panggil fungsi klik
+                closePasswordPopup();
+                secretNotif.style.display = 'none';
             }
+        });
+    });
+
+    confirmSecretBtn.addEventListener('click', () => { // Event untuk konfirmasi rahasia
+        secretNotif.style.display = 'none';
+        if (selectedTarget === 'mainMenu') {
+            showPasswordPopup(); // Tampilkan popup kata sandi
         }
+    });
 
-        function stopOtherMedia(except) {
-            if (except !== audio && audio) {
-                audio.pause();
-                updatePlayPauseIcon(false);
-                if (backgroundVideo) backgroundVideo.pause();
-            }
-            if (except !== backgroundVideo && backgroundVideo) backgroundVideo.pause();
-            if (except !== galleryVideo && galleryVideo) {
-                galleryVideo.pause();
-                videoPlayer.style.display = 'none';
-            }
-            if (except !== backgroundMusic && backgroundMusic) backgroundMusic.pause();
-            if (except !== secretVideo && secretVideo) {
-                secretVideo.pause();
-                document.getElementById('secretVideoPlayer').style.display = 'none';
-            }
-        }
+    cancelSecretBtn.addEventListener('click', () => { // Event untuk batal
+        secretNotif.style.display = 'none';
+        selectedTarget = null;
+    });
+}
 
-        if (playPauseButton) {
-            playPauseButton.addEventListener('click', () => {
-                if (audio.paused) {
-                    stopOtherMedia(audio);
-                    audio.play().then(() => {
-                        if (backgroundVideo) backgroundVideo.play().catch(err => console.error("Error playing video:", err));
-                        updatePlayPauseIcon(true);
-                    }).catch(err => console.error("Error playing audio:", err));
-                } else {
-                    audio.pause();
-                    if (backgroundVideo) backgroundVideo.pause();
-                    updatePlayPauseIcon(false);
-                }
-            });
-        }
-
-        if (rewindButton) {
-            rewindButton.addEventListener('click', () => {
-                const newTime = Math.max(0, audio.currentTime - 10);
-                audio.currentTime = newTime;
-                if (backgroundVideo) backgroundVideo.currentTime = newTime;
-            });
-        }
-
-        if (forwardButton) {
-            forwardButton.addEventListener('click', () => {
-                const newTime = Math.min(audio.duration, audio.currentTime + 10);
-                audio.currentTime = newTime;
-                if (backgroundVideo) backgroundVideo.currentTime = newTime;
-            });
-        }
-
-        if (audio) {
-            audio.addEventListener('timeupdate', () => {
-                const progressPercent = (audio.currentTime / audio.duration) * 100;
-                progress.style.width = `${progressPercent}%`;
-                currentTimeDisplay.textContent = formatTime(audio.currentTime);
-                localStorage.setItem('lastAudioTime', audio.currentTime);
-            });
-
-            audio.addEventListener('loadedmetadata', () => {
-                durationDisplay.textContent = formatTime(audio.duration);
-            });
-        }
-
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // Gallery Script
-        function initializeGallery() {
-            const playButtons = document.querySelectorAll('.play-video-btn');
-            const closeVideoBtn = document.querySelector('.gallery-video-player .close-video-btn');
-
-            resetGallery();
-
-            playButtons.forEach(button => {
-                button.removeEventListener('click', playVideoHandler);
-                button.addEventListener('click', playVideoHandler);
-            });
-
-            if (closeVideoBtn) {
-                closeVideoBtn.removeEventListener('click', closeVideoHandler);
-                closeVideoBtn.addEventListener('click', closeVideoHandler);
-            }
-
-            if (videoPlayer) {
-                videoPlayer.removeEventListener('click', videoPlayerClickHandler);
-                videoPlayer.addEventListener('click', videoPlayerClickHandler);
-            }
-        }
-
-        function playVideoHandler(e) {
-            e.stopPropagation();
-            const videoSrc = this.getAttribute('data-video');
-            stopOtherMedia(galleryVideo);
-            galleryVideoSource.src = videoSrc;
-            galleryVideo.load();
-            galleryVideo.muted = false;
-            galleryVideo.volume = 1.0;
-            videoPlayer.style.display = 'block';
-            galleryVideo.play().catch(err => console.error("Error playing video:", err));
-            setTimeout(() => videoPlayer.scrollIntoView({
+// Fungsi untuk menangani klik item menu
+function handleMenuClick() {
+    const target = this.getAttribute('data-target');
+    document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active')); // Sembunyikan semua konten
+    const targetSection = document.getElementById(target);
+    if (targetSection) {
+        targetSection.classList.add('active'); // Tampilkan target
+        if (target === 'readmeSection') {
+            startTypingEffect(); // Mulai efek ketik untuk readme
+        } else if (target === 'gallerySection') {
+            initializeGallery(); // Inisialisasi galeri
+            setTimeout(() => targetSection.scrollIntoView({ // Gulir ke bagian galeri
                 behavior: 'smooth',
                 block: 'start'
             }), 100);
         }
+    }
+}
 
-        function closeVideoHandler() {
-            videoPlayer.style.display = 'none';
-            galleryVideo.pause();
-            galleryVideoSource.src = '';
-            galleryVideo.load();
-        }
+// Variabel global untuk melacak status efek ketik
+let isTyping = false; // Status apakah efek ketik sedang berjalan
+let timeoutIds = []; // Array untuk menyimpan ID timeout
 
-        function videoPlayerClickHandler(e) {
-            if (e.target === videoPlayer) {
-                videoPlayer.style.display = 'none';
-                galleryVideo.pause();
-                galleryVideoSource.src = '';
-                galleryVideo.load();
+// Fungsi untuk efek ketik pada teks readme
+function startTypingEffect() {
+    const lines = document.querySelectorAll('.readme-letter-text'); // Daftar baris teks
+
+    // Fungsi untuk menghentikan semua efek ketik yang sedang berjalan
+    function stopTyping() {
+        timeoutIds.forEach(id => clearTimeout(id)); // Hentikan semua timeout
+        timeoutIds = []; // Kosongkan array timeout
+        isTyping = false; // Tandai bahwa efek ketik telah berhenti
+    }
+
+    // Jika efek ketik sedang berjalan, hentikan dulu
+    if (isTyping) {
+        stopTyping();
+    }
+
+    // Reset semua teks ke kosong
+    lines.forEach(line => line.textContent = '');
+
+    let currentLine = 0; // Indeks baris saat ini
+    let currentChar = 0; // Indeks karakter saat ini
+
+    // Fungsi untuk mengetik teks baris demi baris
+    function typeLine() {
+        if (currentLine < lines.length) { // Jika masih ada baris yang belum selesai
+            const line = lines[currentLine];
+            const text = line.getAttribute('id') === 'readme-line5' || line.getAttribute('id') === 'readme-line9' ? ' ' :
+                line.getAttribute('id').replace('readme-line', '') === '1' ? 'Kepada Ryrea,' :
+                line.getAttribute('id').replace('readme-line', '') === '2' ? 'Sebelum ada orang lain yang hadir dalam hidupmu, aku sudah diam-diam tertarik padamu karena kamu beda dengan wanita yang pernah saya temui.' :
+                line.getAttribute('id').replace('readme-line', '') === '3' ? 'Aku menyimpan perasaan ini dalam hati, tapi rasa takut membuatku ragu untuk mengungkapkannya.' :
+                line.getAttribute('id').replace('readme-line', '') === '4' ? 'Hingga saat ini, aku hanya bisa mencintaimu dari jauh, mengingat setiap momen kecil yang pernah saya rasakan bersamamu walaupun singkat itu sangat berarti bagiku.' :
+                line.getAttribute('id').replace('readme-line', '') === '6' ? 'Aku akan terus menyayangimu dengan tulus, tanpa mengharapkan balasan, bahkan di tengah kesunyianku sendiri.' :
+                line.getAttribute('id').replace('readme-line', '') === '7' ? 'Perasaan ini adalah harapan yang kupegang erat, dan aku tak ingin mengganggu kebahagiaanmu saat ini.' :
+                line.getAttribute('id').replace('readme-line', '') === '8' ? 'Hubunganmu yang ada adalah pilihanmu, dan aku hanya ingin menjadi seseorang yang menjaga perasaan ini dalam diam, tanpa mengubah apa pun.' :
+                line.getAttribute('id').replace('readme-line', '') === '10' ? 'Dengan hati yang tulus, aku harap kamu tahu bahwa kehadiranmu selalu punya tempat di pikiranku.' :
+                'Teruslah menjadi dirimu sendiri, Ryrea, karena perasaan ini akan tetap ada, meski tak pernah diucapkan.';
+
+            if (currentChar === 0) { // Saat memulai baris baru
+                line.scrollIntoView({ // Gulir ke baris saat ini
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
+            if (currentChar < text.length) { // Jika masih ada karakter yang belum diketik
+                line.textContent += text[currentChar]; // Tambahkan karakter
+                currentChar++;
+                timeoutIds.push(setTimeout(typeLine, 10)); // Jadwalkan karakter berikutnya
+            } else { // Jika satu baris selesai
+                currentChar = 0; // Reset karakter
+                currentLine++; // Pindah ke baris berikutnya
+                if (currentLine < lines.length) { // Jika masih ada baris
+                    timeoutIds.push(setTimeout(typeLine, 500)); // Jeda antar baris
+                } else { // Jika semua baris selesai
+                    stopTyping(); // Hentikan semua timeout
+                    setTimeout(() => {
+                        const firstLine = document.getElementById('readme-line1'); // Ambil elemen baris pertama
+                        if (firstLine) {
+                            firstLine.scrollIntoView({ // Scroll ke baris pertama
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }, 1000); // Jeda 1 detik sebelum scroll ke baris pertama
+                }
             }
         }
+    }
 
-        function resetGallery() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const flips = document.querySelectorAll('.flip');
-            const cover = document.getElementById('cover');
-            const backCover = document.getElementById('back-cover');
-            const labels = document.querySelectorAll('.flip label, #cover label, #back-cover label');
+    // Tandai bahwa efek ketik sedang berjalan dan mulai
+    isTyping = true;
+    typeLine();
+}
 
-            checkboxes.forEach(checkbox => checkbox.checked = false);
-            flips.forEach(flip => {
-                flip.style.transform = 'rotateY(0deg)';
-                flip.style.zIndex = flip.id === 'p1' ? 6 : flip.id === 'p2' ? 5 : flip.id === 'p3' ? 4 :
-                    flip.id === 'p4' ? 3 : flip.id === 'p5' ? 2 : 1;
-            });
+// Integrasi dengan fungsi handleMenuClick untuk memastikan reset saat section readme diklik
+function handleMenuClick() {
+    const target = this.getAttribute('data-target');
+    document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active')); // Sembunyikan semua konten
+    const targetSection = document.getElementById(target);
+    if (targetSection) {
+        targetSection.classList.add('active'); // Tampilkan section yang dipilih
+        if (target === 'readmeSection') {
+            startTypingEffect(); // Mulai efek ketik dari awal setiap kali section readme diklik
+        } else if (target === 'gallerySection') {
+            initializeGallery(); // Inisialisasi galeri
+            setTimeout(() => targetSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            }), 100);
+        }
+    }
+}
+// Elemen untuk popup kata sandi menu
+const passwordPopup = document.getElementById('passwordPopup'); // Popup kata sandi
+const passwordInput = document.getElementById('passwordInput'); // Input kata sandi
+const mainMenu = document.getElementById('mainMenu'); // Elemen menu utama
+const errorPopup = document.getElementById('errorPopup'); // Popup error kata sandi salah
+
+// Fungsi untuk menampilkan popup kata sandi
+function showPasswordPopup() {
+    passwordPopup.style.display = 'block';
+    passwordInput.focus(); // Fokus ke input
+}
+
+// Fungsi untuk memeriksa kata sandi
+function checkPassword() {
+    const password = passwordInput.value.trim();
+    if (password === "love") { // Jika kata sandi benar
+        document.querySelectorAll('.menu-content').forEach(content => content.classList.remove('active'));
+        mainMenu.classList.add('active'); // Tampilkan menu utama
+        closePasswordPopup();
+        passwordInput.value = '';
+        setTimeout(() => mainMenu.scrollIntoView({ // Gulir ke menu
+            behavior: 'smooth',
+            block: 'start'
+        }), 100);
+        initializeBackgroundMusic(); // Inisialisasi musik latar
+    } else {
+        showErrorPopup(); // Tampilkan popup error
+        passwordInput.value = '';
+    }
+}
+
+// Fungsi untuk menutup popup kata sandi
+function closePasswordPopup() {
+    passwordPopup.style.display = 'none';
+}
+
+// Fungsi untuk menampilkan popup error
+function showErrorPopup() {
+    errorPopup.style.display = 'block';
+    setTimeout(closeErrorPopup, 2500); // Sembunyikan setelah 2.5 detik
+}
+
+// Fungsi untuk menutup popup error
+function closeErrorPopup() {
+    errorPopup.style.display = 'none';
+    passwordPopup.style.display = 'block';
+    passwordInput.focus(); // Kembali fokus ke input
+}
+
+passwordInput.addEventListener('keypress', (e) => { // Event untuk tekan Enter di input kata sandi
+    if (e.key === 'Enter') checkPassword();
+});
+
+// Elemen untuk kontrol media
+const audio = document.getElementById('audio'); // Elemen audio utama
+const playPauseButton = document.getElementById('playPauseButton'); // Tombol putar/jeda
+const playPauseIcon = document.getElementById('playPauseIcon'); // Ikon putar/jeda
+const rewindButton = document.getElementById('rewindButton'); // Tombol mundur
+const forwardButton = document.getElementById('forwardButton'); // Tombol maju
+const progress = document.getElementById('progress'); // Bar progres audio
+const currentTimeDisplay = document.getElementById('currentTime'); // Tampilan waktu saat ini
+const durationDisplay = document.getElementById('duration'); // Tampilan durasi total
+const backgroundVideo = document.getElementById('backgroundVideo'); // Video latar
+const backgroundMusic = document.getElementById('backgroundMusic'); // Musik latar
+const videoPlayer = document.getElementById('videoPlayer'); // Pemutar video galeri
+const galleryVideo = document.getElementById('galleryVideo'); // Video galeri
+const galleryVideoSource = document.getElementById('galleryVideoSource'); // Sumber video galeri
+const secretVideo = document.getElementById('secretVideo'); // Video rahasia
+
+// Pengaturan volume awal untuk media
+if (audio) audio.volume = 0.5;
+if (backgroundVideo) {
+    backgroundVideo.muted = true; // Video latar tanpa suara
+    backgroundVideo.loop = true; // Ulangi video
+    backgroundVideo.preload = 'auto'; // Muat otomatis
+}
+if (backgroundMusic) backgroundMusic.volume = 0.3;
+if (clickSound) clickSound.volume = 0.5;
+if (secretVideo) secretVideo.volume = 1.0;
+
+// Fungsi untuk memperbarui ikon putar/jeda
+function updatePlayPauseIcon(isPlaying) {
+    if (playPauseIcon) {
+        playPauseIcon.src = isPlaying ? 'https://cdn-icons-png.flaticon.com/512/107/107733.png' : 'https://cdn-icons-png.flaticon.com/512/0/375.png';
+    }
+}
+
+// Fungsi untuk menghentikan media lain
+function stopOtherMedia(except) {
+    if (except !== audio && audio) {
+        audio.pause();
+        updatePlayPauseIcon(false);
+        if (backgroundVideo) backgroundVideo.pause();
+    }
+    if (except !== backgroundVideo && backgroundVideo) backgroundVideo.pause();
+    if (except !== galleryVideo && galleryVideo) {
+        galleryVideo.pause();
+        videoPlayer.style.display = 'none';
+    }
+    if (except !== backgroundMusic && backgroundMusic) backgroundMusic.pause();
+    if (except !== secretVideo && secretVideo) {
+        secretVideo.pause();
+        document.getElementById('secretVideoPlayer').style.display = 'none';
+    }
+}
+
+// Event untuk tombol putar/jeda audio
+if (playPauseButton) {
+    playPauseButton.addEventListener('click', () => {
+        if (audio.paused) {
+            stopOtherMedia(audio);
+            audio.play().then(() => {
+                if (backgroundVideo) backgroundVideo.play().catch(err => console.error("Error playing video:", err));
+                updatePlayPauseIcon(true);
+            }).catch(err => console.error("Error playing audio:", err));
+        } else {
+            audio.pause();
+            if (backgroundVideo) backgroundVideo.pause();
+            updatePlayPauseIcon(false);
+        }
+    });
+}
+
+// Event untuk tombol mundur
+if (rewindButton) {
+    rewindButton.addEventListener('click', () => {
+        const newTime = Math.max(0, audio.currentTime - 10); // Mundur 10 detik
+        audio.currentTime = newTime;
+        if (backgroundVideo) backgroundVideo.currentTime = newTime;
+    });
+}
+
+// Event untuk tombol maju
+if (forwardButton) {
+    forwardButton.addEventListener('click', () => {
+        const newTime = Math.min(audio.duration, audio.currentTime + 10); // Maju 10 detik
+        audio.currentTime = newTime;
+        if (backgroundVideo) backgroundVideo.currentTime = newTime;
+    });
+}
+
+// Event untuk memperbarui progres audio
+if (audio) {
+    audio.addEventListener('timeupdate', () => {
+        const progressPercent = (audio.currentTime / audio.duration) * 100;
+        progress.style.width = `${progressPercent}%`; // Perbarui bar progres
+        currentTimeDisplay.textContent = formatTime(audio.currentTime); // Tampilkan waktu saat ini
+        localStorage.setItem('lastAudioTime', audio.currentTime); // Simpan waktu terakhir
+    });
+
+    audio.addEventListener('loadedmetadata', () => { // Ketika metadata audio dimuat
+        durationDisplay.textContent = formatTime(audio.duration); // Tampilkan durasi total
+    });
+}
+
+// Fungsi untuk memformat waktu dalam menit:detik
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Gallery Script
+// Fungsi untuk menginisialisasi galeri interaktif
+function initializeGallery() {
+    const playButtons = document.querySelectorAll('.play-video-btn'); // Tombol putar video
+    const closeVideoBtn = document.querySelector('.gallery-video-player .close-video-btn'); // Tombol tutup video
+
+    resetGallery(); // Atur ulang galeri
+
+    playButtons.forEach(button => { // Event untuk tombol putar video
+        button.removeEventListener('click', playVideoHandler);
+        button.addEventListener('click', playVideoHandler);
+    });
+
+    if (closeVideoBtn) { // Event untuk tombol tutup video
+        closeVideoBtn.removeEventListener('click', closeVideoHandler);
+        closeVideoBtn.addEventListener('click', closeVideoHandler);
+    }
+
+    if (videoPlayer) { // Event untuk klik di luar video
+        videoPlayer.removeEventListener('click', videoPlayerClickHandler);
+        videoPlayer.addEventListener('click', videoPlayerClickHandler);
+    }
+}
+
+// Fungsi untuk menangani klik tombol putar video
+function playVideoHandler(e) {
+    e.stopPropagation();
+    const videoSrc = this.getAttribute('data-video'); // Ambil sumber video
+    stopOtherMedia(galleryVideo);
+    galleryVideoSource.src = videoSrc;
+    galleryVideo.load(); // Muat video
+    galleryVideo.muted = false;
+    galleryVideo.volume = 1.0;
+    videoPlayer.style.display = 'block'; // Tampilkan pemutar
+    galleryVideo.play().catch(err => console.error("Error playing video:", err)); // Putar video
+    setTimeout(() => videoPlayer.scrollIntoView({ // Gulir ke video
+        behavior: 'smooth',
+        block: 'start'
+    }), 100);
+}
+
+// Fungsi untuk menutup pemutar video
+function closeVideoHandler() {
+    videoPlayer.style.display = 'none';
+    galleryVideo.pause();
+    galleryVideoSource.src = '';
+    galleryVideo.load(); // Reset video
+}
+
+// Fungsi untuk menangani klik di luar video
+function videoPlayerClickHandler(e) {
+    if (e.target === videoPlayer) {
+        videoPlayer.style.display = 'none';
+        galleryVideo.pause();
+        galleryVideoSource.src = '';
+        galleryVideo.load();
+    }
+}
+
+// Fungsi untuk mengatur ulang galeri
+function resetGallery() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]'); // Checkbox halaman
+    const flips = document.querySelectorAll('.flip'); // Elemen flip
+    const cover = document.getElementById('cover'); // Sampul depan
+    const backCover = document.getElementById('back-cover'); // Sampul belakang
+    const labels = document.querySelectorAll('.flip label, #cover label, #back-cover label'); // Label interaktif
+
+    checkboxes.forEach(checkbox => checkbox.checked = false); // Reset checkbox
+    flips.forEach(flip => { // Atur ulang posisi flip
+        flip.style.transform = 'rotateY(0deg)';
+        flip.style.zIndex = flip.id === 'p1' ? 6 : flip.id === 'p2' ? 5 : flip.id === 'p3' ? 4 :
+            flip.id === 'p4' ? 3 : flip.id === 'p5' ? 2 : 1;
+    });
+    cover.style.transform = 'rotateY(0deg)';
+    cover.style.zIndex = 7;
+    backCover.style.transform = 'rotateY(0deg)';
+    backCover.style.zIndex = 0;
+    videoPlayer.style.display = 'none'; // Sembunyikan pemutar video
+    galleryVideo.pause();
+    galleryVideoSource.src = '';
+    galleryVideo.load();
+
+    labels.forEach(label => { // Event untuk label interaktif
+        label.removeEventListener('click', labelClickHandler);
+        label.addEventListener('click', labelClickHandler);
+    });
+}
+
+// Fungsi untuk menangani klik label (next/back)
+function labelClickHandler(e) {
+    e.stopPropagation();
+    const checkbox = document.querySelector(`#${this.getAttribute('for')}`);
+    const flip = this.closest('.flip');
+    const cover = document.getElementById('cover');
+    const backCover = document.getElementById('back-cover');
+    const allFlips = document.querySelectorAll('.flip');
+    const currentCheckboxId = this.getAttribute('for');
+    const currentPageNum = parseInt(currentCheckboxId.replace('c', ''));
+
+    if (this.classList.contains('next-btn') && !checkbox.checked) { // Jika klik "next"
+        checkbox.checked = true;
+        if (flip) {
+            flip.style.transform = 'rotateY(-180deg)';
+            flip.style.zIndex = 10;
+        }
+        if (checkbox.id === 'c1') {
+            cover.style.transform = 'rotateY(-180deg)';
+            cover.style.zIndex = 0;
+        }
+        allFlips.forEach(otherFlip => {
+            const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
+            if (otherPageNum > currentPageNum) {
+                otherFlip.style.zIndex = 6 - (otherPageNum - 1);
+                otherFlip.style.transform = 'rotateY(0deg)';
+            }
+        });
+    } else if (this.classList.contains('back-btn') && checkbox.checked) { // Jika klik "back"
+        checkbox.checked = false;
+        if (flip) {
+            flip.style.transform = 'rotateY(0deg)';
+            flip.style.zIndex = 7 - currentPageNum;
+        }
+        if (currentCheckboxId === 'c1') {
             cover.style.transform = 'rotateY(0deg)';
             cover.style.zIndex = 7;
-            backCover.style.transform = 'rotateY(0deg)';
-            backCover.style.zIndex = 0;
-            videoPlayer.style.display = 'none';
-            galleryVideo.pause();
-            galleryVideoSource.src = '';
-            galleryVideo.load();
-
-            labels.forEach(label => {
-                label.removeEventListener('click', labelClickHandler);
-                label.addEventListener('click', labelClickHandler);
-            });
-        }
-
-        function labelClickHandler(e) {
-            e.stopPropagation();
-            const checkbox = document.querySelector(`#${this.getAttribute('for')}`);
-            const flip = this.closest('.flip');
-            const cover = document.getElementById('cover');
-            const backCover = document.getElementById('back-cover');
-            const allFlips = document.querySelectorAll('.flip');
-            const currentCheckboxId = this.getAttribute('for');
-            const currentPageNum = parseInt(currentCheckboxId.replace('c', ''));
-
-            if (this.classList.contains('next-btn') && !checkbox.checked) {
-                checkbox.checked = true;
-                if (flip) {
-                    flip.style.transform = 'rotateY(-180deg)';
-                    flip.style.zIndex = 10;
-                }
-                if (checkbox.id === 'c1') {
+            allFlips.forEach(f => f.style.transform = 'rotateY(0deg)');
+        } else {
+            const prevPageNum = currentPageNum - 1;
+            const prevCheckbox = document.querySelector(`#c${prevPageNum}`);
+            if (prevCheckbox) {
+                prevCheckbox.checked = true;
+                if (prevPageNum === 1) {
                     cover.style.transform = 'rotateY(-180deg)';
                     cover.style.zIndex = 0;
-                }
-                allFlips.forEach(otherFlip => {
-                    const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
-                    if (otherPageNum > currentPageNum) {
-                        otherFlip.style.zIndex = 6 - (otherPageNum - 1);
-                        otherFlip.style.transform = 'rotateY(0deg)';
-                    }
-                });
-            } else if (this.classList.contains('back-btn') && checkbox.checked) {
-                checkbox.checked = false;
-                if (flip) {
-                    flip.style.transform = 'rotateY(0deg)';
-                    flip.style.zIndex = 7 - currentPageNum;
-                }
-                if (currentCheckboxId === 'c1') {
-                    cover.style.transform = 'rotateY(0deg)';
-                    cover.style.zIndex = 7;
-                    allFlips.forEach(f => f.style.transform = 'rotateY(0deg)');
+                    const p1 = document.querySelector('#p1');
+                    p1.style.transform = 'rotateY(-180deg)';
+                    p1.style.zIndex = 10;
                 } else {
-                    const prevPageNum = currentPageNum - 1;
-                    const prevCheckbox = document.querySelector(`#c${prevPageNum}`);
-                    if (prevCheckbox) {
-                        prevCheckbox.checked = true;
-                        if (prevPageNum === 1) {
-                            cover.style.transform = 'rotateY(-180deg)';
-                            cover.style.zIndex = 0;
-                            const p1 = document.querySelector('#p1');
-                            p1.style.transform = 'rotateY(-180deg)';
-                            p1.style.zIndex = 10;
-                        } else {
-                            const prevFlip = document.querySelector(`#p${prevPageNum}`);
-                            if (prevFlip) {
-                                prevFlip.style.transform = 'rotateY(-180deg)';
-                                prevFlip.style.zIndex = 10;
-                            }
-                        }
+                    const prevFlip = document.querySelector(`#p${prevPageNum}`);
+                    if (prevFlip) {
+                        prevFlip.style.transform = 'rotateY(-180deg)';
+                        prevFlip.style.zIndex = 10;
                     }
-                    allFlips.forEach(otherFlip => {
-                        const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
-                        if (otherFlip.style.zIndex !== '10') {
-                            otherFlip.style.zIndex = 7 - otherPageNum;
-                        }
-                    });
                 }
             }
-        }
-
-        // Media Cache Initialization
-        function initializeMediaCache() {
-            const audio = document.getElementById('audio');
-            const backgroundMusic = document.getElementById('backgroundMusic');
-            const secretVideo = document.getElementById('secretVideo');
-
-            [audio, backgroundMusic, secretVideo].forEach(media => {
-                if (media) {
-                    media.setAttribute('crossorigin', 'anonymous');
-                    media.preload = 'auto';
+            allFlips.forEach(otherFlip => {
+                const otherPageNum = parseInt(otherFlip.id.replace('p', ''));
+                if (otherFlip.style.zIndex !== '10') {
+                    otherFlip.style.zIndex = 7 - otherPageNum;
                 }
             });
-
-            if (localStorage.getItem('lastAudioTime')) {
-                audio.currentTime = parseFloat(localStorage.getItem('lastAudioTime'));
-            }
         }
+    }
+}
 
-        // Initialize Everything
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeResponseHandler();
-            initializePin();
-            initializeGallery();
-            initializeMediaCache();
-        });
+// Media Cache Initialization
+// Fungsi untuk menginisialisasi cache media
+function initializeMediaCache() {
+    const audio = document.getElementById('audio');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const secretVideo = document.getElementById('secretVideo');
+
+    [audio, backgroundMusic, secretVideo].forEach(media => { // Atur preload untuk media
+        if (media) {
+            media.setAttribute('crossorigin', 'anonymous');
+            media.preload = 'auto';
+        }
+    });
+
+    if (localStorage.getItem('lastAudioTime')) { // Pulihkan waktu terakhir audio
+        audio.currentTime = parseFloat(localStorage.getItem('lastAudioTime'));
+    }
+}
+
+// Initialize Everything
+// Inisialisasi semua fungsi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    initializeResponseHandler(); // Inisialisasi handler respons
+    initializePin(); // Inisialisasi logika PIN
+    initializeGallery(); // Inisialisasi galeri
+    initializeMediaCache(); // Inisialisasi cache media
+});
     </script>
 </body>
 
